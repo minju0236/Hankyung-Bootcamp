@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="data.js"></script>
+    <title>대시보드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        html {
+            background: linear-gradient(90deg, #CF40FF 0%, #427EFF 103.09%);
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        .container {
+            margin: 50px auto;
+            background-color: white;
+            width: 1200px;
+            height: 804px;
+            border-radius: 50px;
+            position: relative;
+        }
+
+        .monthly-sales {
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            width: 740px;
+            height: 352px;
+        }
+
+        .yearly-sales {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            border-radius: 30px;
+            background: linear-gradient(90deg, rgba(207, 64, 255, 0.75) 0%, rgba(66, 126, 255, 0.75) 103.09%);
+            width: 330px;
+            height: 352px;
+            padding: 50px 28px;
+            gap: 8px;
+            box-sizing: border-box;
+            color: #FFF;
+            font-family: Inter;
+            font-weight: 700;
+        }
+
+        .sales-ratio {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            width: 350px;
+            height: 294px;
+        }
+
+        #sales-ratio {
+            width: 250px;
+            height: 250px;
+            opacity: 0.7;
+        }
+
+        .sales-compare {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            width: 720px;
+            height: 294px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 월별 매출 추이 -->
+        <section class="monthly-sales">
+            <h3>월별 매출 추이</h3>
+            <canvas id="monthly-sales"></canvas>
+        </section>
+
+        <!-- 연간 매출 총액 -->
+        <section class="yearly-sales">
+            <div>연간 매출 총액</div>
+            <div id="yearly-sales" style="font-size: 40px;">000원</div>
+        </section>
+
+        <!-- 연간 월 매출 비교 -->
+        <section class="sales-ratio">
+            <h3>연간 월 매출 비교</h3>
+            <canvas id="sales-ratio"></canvas>
+        </section>
+
+        <!-- 월별 매출 비교 -->
+        <section class="sales-compare">
+            <h3>월별 매출 비교</h3>
+            <canvas id="sales-compare"></canvas>
+        </section>
+    </div>
+
+    <script>
+        const monthlySalesCtx = document.getElementById('monthly-sales').getContext('2d');
+        new Chart(monthlySalesCtx, {
+            type: 'bar',
+            data: {
+                labels: tossBankData.timeline.months,
+                datasets: [
+                    {
+                        type: 'line',
+                        label: '월별 매출',
+                        data: tossBankData.timeline.deposits,
+                        borderColor: '#CF40FF',
+                        borderWidth: 3,
+                        fill: 'origin',
+                        backgroundColor: '#CF40FF4D',
+                    },
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, title: { display: true, text: '(단위: 억 원)' } } }
+            }
+        });
+
+        let sum = 0;
+        const yearlySales = () => {
+            for (let i = 0; i < 12; i++) {
+                sum += tossBankData.timeline.deposits[i];
+            }
+        }
+        yearlySales();
+        document.getElementById('yearly-sales').innerHTML = sum + "원";
+
+        const salesCompareCtx = document.getElementById('sales-ratio').getContext('2d');
+        new Chart(salesCompareCtx, {
+            type: 'doughnut',
+            data: {
+                labels: tossBankData.timeline.months,
+                datasets: [
+                    {
+                        type: 'doughnut',
+                        data: tossBankData.timeline.deposits,
+                        backgroundColor: [
+                            "#CF40FF",
+                            "#B33DFF",
+                            "#983BFF",
+                            "#7E39FF",
+                            "#6537FF",
+                            "#4D4CFF",
+                            "#4160FF",
+                            "#3D74FF",
+                            "#3988FF",
+                            "#359CFF",
+                            "#31B0FF",
+                            "#2DC4FF"
+                        ]
+                    },
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        const salesRatioCtx = document.getElementById('sales-compare').getContext('2d');
+        new Chart(salesRatioCtx, {
+            type: 'bar',
+            data: {
+                labels: tossBankData.timeline.months,
+                datasets: [
+                    {
+                        type: 'bar',
+                        data: tossBankData.timeline.deposits,
+                        backgroundColor: [
+                            "#CF40FF",
+                            "#B33DFF",
+                            "#983BFF",
+                            "#7E39FF",
+                            "#6537FF",
+                            "#4D4CFF",
+                            "#4160FF",
+                            "#3D74FF",
+                            "#3988FF",
+                            "#359CFF",
+                            "#31B0FF",
+                            "#2DC4FF"
+                        ]
+                    },
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

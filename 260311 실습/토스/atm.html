@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>토스뱅크 - ATM 찾기</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* [1] 공통 레이아웃 유지 */
+        body {
+            margin: 0;
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 280px 1fr 1fr;
+            grid-template-rows: 70px 1fr 1fr;
+            background-color: #f2f4f6;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            color: #191f28;
+        }
+
+        .header { 
+            grid-column: 1 / 4;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 100;
+            border-bottom: 1px solid #e5e8eb;
+        }
+
+        .toss-logo { color: #3182f6; font-size: 1.4rem; font-weight: 800; text-decoration: none; }
+
+        .sidebar { 
+            grid-column: 1; grid-row: 2 / 4; 
+            background-color: #ffffff; border-right: 1px solid #e5e8eb; padding: 20px;
+        }
+
+        .menu-link { text-decoration: none; display: block; margin-bottom: 4px; }
+        .menu-item {
+            padding: 14px 20px; border-radius: 12px; color: #4e5968;
+            font-weight: 600; transition: 0.2s;
+        }
+        .menu-item:hover { background-color: #f9fafb; color: #3182f6; }
+        .menu-item.active { background-color: #f2f4f6; color: #191f28; }
+
+        /* [2] 메인 콘텐츠: 지도 및 상세 정보 */
+        .main-content { 
+            grid-column: 2 / 4; grid-row: 2 / 4; 
+            padding: 24px; overflow-y: auto; 
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .toss-card { 
+            background: white; border-radius: 24px; padding: 24px 30px;
+            box-shadow: none;
+        }
+
+        /* 지도 스타일 */
+        #map { 
+            height: 400px; width: 100%; border-radius: 18px; 
+            z-index: 1; /* 사이드바와 겹침 방지 */
+        }
+
+        /* 테이블 스타일 */
+        .atm-table { 
+            width: 100%; border-collapse: collapse; margin-top: 10px;
+        }
+        .atm-table th { 
+            text-align: left; padding: 12px 16px; color: #8b95a1; 
+            font-size: 0.85rem; border-bottom: 1px solid #f2f4f6; 
+        }
+        .atm-table td { 
+            padding: 16px; border-bottom: 1px solid #f9fafb; font-size: 0.9rem;
+        }
+        .bank-tag { font-weight: 700; color: #3182f6; }
+        .fee-info { font-size: 0.85rem; color: #6b7684; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="home.html" class="toss-logo">toss bank</a>
+        <div style="color: #6b7684; font-weight: 600;">마이페이지</div>
+    </header>
+
+    <aside class="sidebar">
+        <a href="home.html" class="menu-link"><div class="menu-item">홈</div></a>
+        <a href="account.html" class="menu-link"><div class="menu-item">내 계좌</div></a>
+        <a href="finance.html" class="menu-link"><div class="menu-item">금융 상품</div></a>
+        <a href="transfer.html" class="menu-link"><div class="menu-item">송금하기</div></a>
+        <a href="customer.html" class="menu-link"><div class="menu-item">나의 금융상식</div></a>
+        <a href="atm.html" class="menu-link"><div class="menu-item active">ATM 찾기</div></a>
+    </aside>
+
+    <main class="main-content">
+        <h2 style="font-size: 1.5rem; font-weight: 700; margin-left: 10px;">나에게 맞는 ATM 찾기</h2>
+        
+        <div class="toss-card">
+            <div id="map"></div>
+        </div>
+
+        <div class="toss-card">
+            <h3 style="font-size: 1.1rem; margin-bottom: 20px;">ATM 상세 이용 안내</h3>
+            <table class="atm-table">
+                <thead>
+                    <tr>
+                        <th>은행명</th>
+                        <th>설치 장소</th>
+                        <th>운영 시간</th>
+                        <th>수수료 (내/외)</th>
+                        <th>특이사항</th>
+                    </tr>
+                </thead>
+                <tbody id="atm-table-body">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="data.js"></script> <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        // 지도 초기화 
+        const map = L.map('map').setView([37.5597, 126.9640], 16);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        const tableBody = document.getElementById('atm-table-body');
+
+        // myData 배열 순회 
+        if (typeof myData !== 'undefined') {
+            myData.forEach(function(item) {
+                // 1. 지도 마커 추가
+                L.marker([item.lat, item.lng])
+                    .addTo(map)
+                    .bindPopup(`<b style="color:#3182f6;">${item.bank_name}</b><br>${item.branch_name}`);
+
+                // 2. 표 행(Row) 생성
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="bank-tag">${item.bank_name}</td>
+                    <td>${item.branch_name} <br><span style="font-size:0.8rem; color:#8b95a1;">${item.type}</span></td>
+                    <td>${item.operating_hours}</td>
+                    <td class="fee-info">내: ${item.fee_on}<br>외: ${item.fee_off}</td>
+                    <td style="color:#6b7684;">${item.extra_info}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        } else {
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px;">데이터를 불러올 수 없습니다. (data.js 확인 필요)</td></tr>';
+        }
+    </script>
+</body>
+</html>

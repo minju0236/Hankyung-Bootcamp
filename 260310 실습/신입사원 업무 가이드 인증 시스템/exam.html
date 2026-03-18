@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>토스뱅크 신입사원 업무 가이드 테스트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #f8f9fa;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .name-section {
+            background: white;
+            border: 2px solid #2d5bff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .name-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #dee2e6;
+        }
+
+        .q-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .option-item {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            text-align: left;
+            cursor: pointer;
+            background: #fff;
+        }
+
+        .option-item.selected {
+            background: #2d5bff;
+            color: white;
+            border-color: #2d5bff;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: #2d5bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 style="text-align: center; color: #2d5bff; display: flex; align-items: center; gap: 20px; justify-content: center;">
+            <img src="static/toss_logo.png" style="width: 50px;" alt="토스로고">
+            업무 가이드 퀴즈
+        </h1>
+
+        <div class="name-section">
+            <label>사원 성함:</label>
+            <input type="text" id="user-name" class="name-input" placeholder="이름을 입력하세요">
+        </div>
+
+        <div id="quiz-list"></div>
+        <button class="btn-submit" onclick="saveAndGo()">시험 종료 및 결과 확인</button>
+    </div>
+
+    <script src="./static/guide_data.js"></script>
+    <script>
+        const userAnswers = {};
+
+        function render() {
+            const list = document.getElementById('quiz-list');
+            list.innerHTML = guideData.map((q, qIdx) => `
+                <div class="card">
+                    <div class="q-title">${q.id}. ${q.question}</div>
+                    ${q.options.map((opt, oIdx) => `
+                        <button class="option-item" id="opt-${qIdx}-${oIdx}" onclick="select(${qIdx}, ${oIdx})">
+                            ${oIdx + 1}. ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function select(qIdx, oIdx) {
+            document.querySelectorAll(`[id^="opt-${qIdx}-"]`).forEach(b => b.classList.remove('selected'));
+            document.getElementById(`opt-${qIdx}-${oIdx}`).classList.add('selected');
+            userAnswers[qIdx] = oIdx;
+        }
+
+        function saveAndGo() {
+            const name = document.getElementById('user-name').value.trim();
+            if (!name) return alert("이름을 입력해주세요.");
+
+            // JSON 형식의 객체 생성
+            const resultData = {
+                userName: name,
+                answers: userAnswers,
+                date: new Date().toLocaleString()
+            };
+
+            // result.js의 역할을 대신할 데이터를 localStorage에 JSON 문자열로 저장
+            localStorage.setItem('testResult', JSON.stringify(resultData));
+            location.href = 'insight.html';
+        }
+        render();
+    </script>
+</body>
+
+</html>

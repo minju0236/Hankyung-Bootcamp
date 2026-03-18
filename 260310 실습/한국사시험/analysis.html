@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>한국사능력검정시험 | 결과분석</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; background: #f8f9fa; padding: 40px 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 15px; border: 1px solid #dee2e6; }
+        h1 { text-align: center; color: #2d5bff; }
+        .chart-wrapper { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 30px; }
+        .chart-box { width: 350px; text-align: center; }
+        .info-text { margin-top: 20px; text-align: center; color: #666; }
+        .btn-back { display: block; width: 150px; margin: 30px auto; padding: 10px; text-align: center; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="user-title">결과 분석 보고서</h1>
+        <div class="info-text" id="info-text"></div>
+
+        <div class="chart-wrapper">
+            <div class="chart-box">
+                <h3>전체 정답률</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <h3>카테고리별 성적</h3>
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+
+        <a href="result.html" class="btn-back">뒤로 가기</a>
+    </div>
+
+    <script src="./history.js"></script>
+    <script>
+        function renderAnalysis() {
+            const jsonStr = localStorage.getItem('testResult');
+            if (!jsonStr) {
+                alert("데이터가 없습니다.");
+                location.href = 'history.html';
+                return;
+            }
+            const data = JSON.parse(jsonStr);
+            document.getElementById('user-title').innerText = `${data.userName} 님의 분석 리포트`;
+
+            // 데이터 분석 로직
+            let correctCount = 0;
+            let totalCount = historyData.length;
+            const categoryStats = {}; // { "선사": {total: 2, correct: 1}, ... }
+
+            historyData.forEach((q, idx) => {
+                const isCorrect = data.answers[idx] === q.answer;
+                
+                // 전체 집계
+                if (isCorrect) correctCount++;
+
+                // 카테고리별 집계
+                if (!categoryStats[q.category]) {
+                    categoryStats[q.category] = { total: 0, correct: 0 };
+                }
+                categoryStats[q.category].total++;
+                if (isCorrect) categoryStats[q.category].correct++;
+            });
+
+            // 1. 파이 차트 그리기 (정답 vs 오답)
+            new Chart(document.getElementById('pieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['정답', '오답'],
+                    datasets: [{
+                        data: [correctCount, totalCount - correctCount],
+                        backgroundColor: ['#99fec5', '#ff666d']
+                    }]
+                }
+            });
+
+            // 2. 바 차트 그리기 (카테고리별)
+            const catLabels = Object.keys(categoryStats);
+            const catData = catLabels.map(cat => categoryStats[cat].correct);
+
+            new Chart(document.getElementById('barChart'), {
+                type: 'line',
+                data: {
+                    labels: catLabels,
+                    datasets: [{
+                        label: '맞힌 개수',
+                        data: catData,
+                        backgroundColor: '#7085ff',
+                        fill: 'origin',
+                    }]
+                },
+                options: {
+                    scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+
+            document.getElementById('info-text').innerText = `총 ${totalCount}문제 중 ${correctCount}문제를 맞혔습니다.`;
+        }
+
+        renderAnalysis();
+    </script>
+</body>
+</html>

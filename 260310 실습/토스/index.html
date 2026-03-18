@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>토스뱅크 소비분석</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* [1] 일관된 그리드 설계 (3x3 기반) */
+        body {
+            margin: 0;
+            display: grid;
+            height: 100vh;
+            /* 사이드바 280px 고정 / 나머지 비율 배분 */
+            grid-template-columns: 280px 1fr 1fr;
+            /* 헤더 70px / 나머지 비율 배분 */
+            grid-template-rows: 70px 1fr 1fr;
+            background-color: #f2f4f6;
+            /* 토스 특유의 깨끗한 배경색 */
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            min-width: 1500px
+        }
+
+        /* [2] 상단 헤더: 전체 가로 병합 (1 / 4) */
+        .header {
+            grid-column: 1 / 4;
+            /* 3개의 컬럼은 4개의 선이 존재 그걸 의미하는 것임 */
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 100;
+        }
+
+        .toss-logo {
+            color: #3182f6;
+            /* 토스 시그니처 블루 */
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        /* [3] 좌측 사이드바: 세로 전체 병합 (2 / 4) */
+        .sidebar {
+            grid-column: 1;
+            grid-row: 2 / 4;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e8eb;
+            padding: 20px;
+        }
+
+        .menu-item {
+            padding: 14px 20px;
+            border-radius: 12px;
+            color: #4e5968;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 4px;
+            transition: 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: #f9fafb;
+            color: #3182f6;
+        }
+
+        .menu-item.active {
+            background-color: #f2f4f6;
+            color: #191f28;
+        }
+
+        /* [4] 메인 콘텐츠: 나머지 공간 병합 (2 / 4) */
+        .main-content {
+            grid-column: 2 / 4;
+            grid-row: 2 / 4;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* 토스 스타일 카드 */
+        .toss-card {
+            background: white;
+            border-radius: 24px;
+            /* 토스 디자인의 핵심: 아주 둥근 모서리 */
+            padding: 30px;
+            box-shadow: none;
+            /* 그림자보다는 면 분할 강조 */
+        }
+
+        .amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #191f28;
+            margin: 10px 0;
+        }
+
+        .btn-toss {
+            background-color: #3182f6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .wrap {
+            height: 900px;
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 37px;
+            display: flex;
+            flex-direction: column;
+            gap: 106px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 28px;
+        }
+
+        #lineChart {
+            width: 490px;
+        }
+
+        #barChart {
+            width: 493px;
+        }
+
+        .toss-check-card {
+            width: 185px;
+            height: 293px;
+        }
+
+        .explanation {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .card-name {
+            color: #3182F6;
+            font-size: 40px;
+            font-weight: 700;
+        }
+
+        .toss-cards {
+            width: 363px;
+            height: 204px;
+        }
+
+        .report-text {
+            font-size: 20px;
+            margin-top: 13px;
+        }
+
+        .report-text span {
+            color: #3182F6;
+            font-weight: 700;
+        }
+
+        .apply-btn {
+            background-color: #3182f6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 237px;
+            margin-right: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="toss-logo">toss bank</div>
+        <div style="color: #6b7684; font-weight: 600;">마이페이지</div>
+    </header>
+
+    <aside class="sidebar">
+        <div class="menu-item active">홈</div>
+        <div class="menu-item">내 계좌</div>
+        <div class="menu-item">금융 상품</div>
+        <div class="menu-item">송금하기</div>
+        <div class="menu-item">고객센터</div>
+    </aside>
+
+    <main class="main-content">
+        <div class="toss-card">
+            <div style="color: #6b7684; font-size: 0.9rem;">토스뱅크 통장</div>
+            <div class="amount">12,450,000 원</div>
+            <button class="btn-toss">송금</button>
+        </div>
+
+        <div class="toss-card" style="flex: 1;">
+            <div style="color: #191f28; font-weight: 700; margin-bottom: 20px;">소비 분석</div>
+            <div class="wrap">
+                <!--소비 패턴-->
+                <section>
+                    <div class="title">이민주님의 소비패턴을 분석했어요</div>
+                    <div style="display: flex; gap: 53px;">
+                        <div style="text-align: center;">
+                            <canvas id="lineChart"></canvas>
+                            <div class="report-text">
+                                주로 <span id="mostDay"></span>요일에 많이 소비했어요
+                            </div>
+                        </div>
+                        <div style="text-align: center;">
+                            <canvas id="barChart"></canvas>
+                            <div class="report-text">가장 많이 쓴 카테고리는 <span id="mostCategory">식비</span>에요</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--카드 추천-->
+                <section>
+                    <div class="title">이민주님을 위한 추천 카드는 <span style="color: #3182F6;">토스뱅크 체크카드</span>에요</div>
+                    <div style="background: #fff; display: flex; border-radius: 20px; gap: 57px;">
+                        <div style="display: flex; min-width: 540px; gap: 43px; height: 336px; padding: 37px 0 0 54px;">
+                            <img class="toss-check-card" src="toss_check_card.png" alt="tossbank check card">
+                            <div>
+                                <div class="explanation">쓰던 통장 그대로,<br>누릴 혜택은 더 좋아져요</div>
+                                <div class="card-name">토스뱅크 체크카드</div>
+                                <ul>
+                                    <li>연 2% 입출금 통장으로 변신!</li><br>
+                                    <li>누르면, 매일 이자 받기</li><br>
+                                    <li>체크카드 혜택은 그대로</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: end; gap: 73px;">
+                            <img class="toss-cards" src="toss_cards.png" alt="toss cards">
+                            <button class="apply-btn">토스뱅크 체크카드 신청하기</button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="./toss.js"></script>
+    <script>
+        const dayCount = {
+            월: 0,
+            화: 0,
+            수: 0,
+            목: 0,
+            금: 0,
+            토: 0,
+            일: 0
+        };
+
+        const categoryTotal = {
+            식비: 0,
+            교통비: 0,
+            쇼핑: 0,
+            카페: 0,
+            문화생활: 0,
+            구독: 0,
+            생활비: 0,
+            기타: 0
+        };
+
+        expenseData.forEach(item => {
+            dayCount[item.day]++;
+            categoryTotal[item.category] += item.cost;
+        });
+
+        // 가장 많이 소비한 요일
+        const mostDay = Object.keys(dayCount).reduce((a, b) =>
+            dayCount[a] > dayCount[b] ? a : b
+        );
+        document.getElementById("mostDay").textContent = mostDay;
+
+        // 가장 많이 쓴 카테고리
+        const mostCategory = Object.keys(categoryTotal).reduce((a, b) =>
+            categoryTotal[a] > categoryTotal[b] ? a : b
+        );
+        document.getElementById("mostCategory").textContent = mostCategory;
+
+        const dayData = Object.values(dayCount);
+
+        const categoryData = Object.values(categoryTotal);
+
+        // 라인 차트
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: Object.keys(dayCount),
+                datasets: [{
+                    label: '소비 횟수',
+                    data: dayData,
+                    borderColor: '#3182f6',
+                    backgroundColor: 'rgba(49,130,246,0.2)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        scaleLineColor: 'red',
+                        grid: {
+                            color: 'transparent',
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'transparent',
+                        },
+                    }
+                }
+            }
+        });
+
+
+        // 바 차트
+        const barCtx = document.getElementById('barChart').getContext('2d');
+
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(categoryTotal),
+                datasets: [{
+                    label: '지출 금액',
+                    data: categoryData,
+                    backgroundColor: '#3182f6',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false,
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        scaleLineColor: 'red',
+                        grid: {
+                            color: 'transparent',
+                        },
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'transparent',
+                        },
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

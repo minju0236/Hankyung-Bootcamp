@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* [배경 설명] 그리드 컨테이너 설정
+           그리드 시스템은 '부모(body)'가 틀을 짜고 '자식(item)'이 배치되는 구조입니다.
+           여기서는 화면 전체를 3x3 바둑판으로 설계했습니다. */
+        body {
+            margin: 0;
+            display: grid;
+            /* 요소를 그리드(바둑판) 방식으로 배치하겠다고 선언 */
+            height: 100vh;
+            /* Viewport Height: 브라우저 화면 높이를 100% 다 사용 */
+
+            /* [설계] 가로(Column)를 1:1:1 비율로 3개 나눔 */
+            grid-template-columns: 120px 1fr 1fr 1fr;
+
+            /* [설계] 세로(Row)를 1:1:1 비율로 3개 나눔 */
+            grid-template-rows: 100%;
+        }
+
+        /* [배경 설명] 공통 스타일 디자인
+           모든 아이템에 중복되는 디자인 속성을 한곳에 모아 관리합니다. (관심사 분리)
+           나중에 테두리나 글자 크기를 한꺼번에 바꿀 때 여기만 수정하면 됩니다. */
+        .item {
+            display: flex;
+            /* 텍스트를 중앙에 두기 위해 내부적으로 Flexbox 사용 */
+            align-items: center;
+            /* 세로 방향 중앙 정렬 */
+            justify-content: center;
+            /* 가로 방향 중앙 정렬 */
+            font-weight: bold;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* 칸 구분을 위해 투명도가 있는 흰색 테두리 사용 */
+        }
+
+        /* [배경 설명] 개별 좌표 및 색상 지정
+           grid-column과 grid-row에 숫자를 하나만 쓰면 '해당 칸'을 의미합니다.
+           이 방식은 HTML 태그 순서가 뒤섞여도 위치가 변하지 않는 '절대 위치' 방식입니다. */
+
+        /* 1열 배치: 세로줄(column)은 1로 고정하고 가로줄(row) 번호만 바꿈 */
+        .color1 {
+            background-color: #95a5a6;
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .color2 {
+            background-color: #e74c3c;
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .color3 {
+            background-color: #3498db;
+            grid-column: 1;
+            grid-row: 3;
+        }
+
+        /* 2열 배치: 세로줄(column)은 2로 고정 */
+        .color4 {
+            background-color: #2fdb3d;
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .color5 {
+            background-color: #f1c40f;
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .color6 {
+            background-color: #e67e22;
+            grid-column: 2;
+            grid-row: 3;
+        }
+
+        /* 3열 배치: 세로줄(column)은 3으로 고정 */
+        .color7 {
+            background-color: #451abc;
+            grid-column: 3;
+            grid-row: 1;
+        }
+
+        .color8 {
+            background-color: #34495e;
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        .color9 {
+            background-color: #e74c3c;
+            grid-column: 3;
+            grid-row: 3;
+        }
+
+        .color10 {
+            background-color: #e74c3c;
+            grid-column: 4;
+            grid-row: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="item color1">1행 1열</div>
+    <!-- <div class="item color2">2행 1열</div>
+    <div class="item color3">3행 1열</div> -->
+
+    <div class="item color4">1행 2열</div>
+    <!-- <div class="item color5">2행 2열</div>
+    <div class="item color6">3행 2열</div> -->
+
+    <div class="item color7">1행 3열</div>
+    <!-- <div class="item color8">2행 3열</div>
+    <div class="item color9">3행 3열</div> -->
+
+    <div class="item color10">1행 4열</div>
+
+</body>
+
+</html>

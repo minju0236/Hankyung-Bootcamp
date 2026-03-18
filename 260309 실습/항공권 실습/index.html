@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>항공권</title>
+    <style>
+        :root {
+            --primary-color: #E4B858;
+            --gray-color: rgb(185, 185, 185);
+            --border-color: #404551;
+            --yellow-color: #EC9D18;
+
+            --status-wait-bg: #4F3F30;
+            --status-wait-text: #EFA221;
+
+            --status-delay-bg: #2A395A;
+            --status-delay-text: #3E80EE;
+
+            --status-depart-bg: #274541;
+            --status-depart-text: #21B283;
+
+            --status-cancellation-bg: #4F2E37;
+            --status-cancellation-text: #EC4645;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #1A1C22;
+            color: white;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            margin-top: 30px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title {
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .title img {
+            width: 20px;
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 30px;
+            gap: 5px;
+        }
+
+        .title span {
+            font-weight: 400;
+            font-size: 18px;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .time {
+            color: var(--gray-color);
+            font-size: 14px;
+        }
+
+
+        hr {
+            height: 1px;
+            border: none;
+            background-color: var(--primary-color);
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background-color: #242732;
+        }
+
+        th {
+            background-color: #2D3240;
+            padding: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #A9B3C6;
+            border-bottom: 2px solid var(--border-color);
+            text-transform: uppercase;
+            border-radius: 10px;
+        }
+
+        td {
+            padding: 16px;
+            font-size: 15px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .schedule {
+            font-size: 12px;
+            color: var(--gray-color);
+            text-decoration: line-through;
+        }
+
+        .estimated {
+            font-weight: 700;
+        }
+
+        .wait {
+            color: var(--yellow-color);
+        }
+
+        .airline {
+            display: flex;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 50px;
+        }
+
+
+
+        .flightId {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .destination {
+            font-weight: 700;
+        }
+
+        .gate {
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .status-item {
+            border-radius: 5px;
+            padding: 5px 15px;
+            display: inline-block;
+        }
+
+        .status-wait {
+            background-color: var(--status-wait-bg);
+            color: var(--status-wait-text);
+            border: 1px solid var(--status-wait-text);
+        }
+
+        .status-delay {
+            background-color: var(--status-delay-bg);
+            color: var(--status-delay-text);
+            border: 1px solid var(--status-delay-text);
+        }
+
+        .status-depart {
+            background-color: var(--status-depart-bg);
+            color: var(--status-depart-text);
+            border: 1px solid var(--status-depart-text);
+        }
+
+        .status-cancellation {
+            background-color: var(--status-cancellation-bg);
+            color: var(--status-cancellation-text);
+            border: 1px solid var(--status-cancellation-text);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!--헤더-->
+        <header>
+            <div class="title">
+                <img src="flight.png">
+                DEPARTURES <span>출발현황</span>
+            </div>
+            <div class="time" id="clock">0000-00-00</div>
+        </header>
+
+        <hr>
+
+        <!--메인-->
+        <main>
+            <table>
+                <thead>
+                    <tr>
+                        <th>시간(예정)</th>
+                        <th>항공사</th>
+                        <th>편명</th>
+                        <th>목적지</th>
+                        <th class="center">탑승구</th>
+                        <th class="center">상태</th>
+                    </tr>
+                </thead>
+
+                <tbody id="list"></tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="./flight.js"></script>
+
+    <script>
+        const tbody = document.getElementById('list');
+        const formatTime = (time) => {
+            return time.replace(':', ' : ');
+        }
+
+        //지연 탑승중 수속중 출발완료 결항
+        function getStatusClass(status) {
+            if (status === '지연') return 'status-wait';
+            if (status === '탑승중' || status === '수속중') return 'status-delay';
+            if (status === '출발완료') return 'status-depart';
+            if (status === '결항') return 'status-cancellation';
+            return;
+        }
+
+        //지연이면 시간 색상 다르게
+        const setTimeColor = (status) => {
+            if (status === '지연') return 'wait';
+        }
+
+        // 시간 설정
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleString('ko-KR');
+        }
+
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        if (typeof flightData !== 'undefined') {
+            tbody.innerHTML = flightData.map(item => {
+                const logo = `<img class="logo" src="./${item.logo}.png" alt="${item.logo}" onerror="this.src='./korean-air.png'">`;
+
+                return `
+                <tr>
+                    <td>
+                        <div class="schedule">${formatTime(item.schedule)}</div>
+                        <div class="estimated ${setTimeColor(item.status)}">${formatTime(item.estimated)}</div>
+                   </td>
+                    <td>
+                        <div class="airline">
+                            <div>${logo}</div>
+                            <div>${item.airline}</div>
+                        </div>
+                    </td>
+                    <td class="flightId">${item.flightId}</td>
+                    <td class="destination">${item.destination}</td>
+                    <td class="gate">${item.gate}</td>
+                    <td class="center"><div class="status-item ${getStatusClass(item.status)}">${item.status}</div></td>
+                </tr>
+            `;
+            }).join('');
+        } else {
+            tbody.innerHTML = `<tr><td colspan="6" style="padding: 50px; text-align:center; color: red;">flight.js 데이터를 찾을 수 없습니다.</td></tr>`;
+        }
+    </script>
+</body>
+
+</html>

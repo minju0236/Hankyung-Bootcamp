@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정로역 근처 카페 모음</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body { font-family: sans-serif; margin: 20px; line-height: 1.6; }
+        #map { height: 400px; width: 100%; border-radius: 10px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #f2f2f2; color: #333; }
+        tr:hover { background-color: #f9f9f9; }
+        .bank-tag { font-weight: bold; color: #0056b3; }
+        .fee-info { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <h2>충정로역 근처 카페 지도</h2>
+    <div id="map"></div>
+
+    <h3>충정로역 근처 카페 리스트</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>카페명</th>
+                <th>위치</th>
+                <th>운영 시간</th>
+                <th>안내</th>
+                <th>별점</th>
+            </tr>
+        </thead>
+        <tbody id="atm-table-body">
+            </tbody>
+    </table>
+
+    <script src="data.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        const map = L.map('map').setView([37.5597, 126.9640], 16);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        const tableBody = document.getElementById('atm-table-body');
+
+        myData.forEach(function(item) {
+            // 1. 지도 마커 추가
+            L.marker([item.lat, item.lng])
+                .addTo(map)
+                .bindPopup("<b>" + item.bank_name + "</b><br>" + item.branch_name);
+
+            // 2. 표 행(Row) 생성
+            const row = document.createElement('tr');
+            row.innerHTML = 
+                "<td class='bank-tag'>" + item.bank_name + "</td>" +
+                "<td>" + item.branch_name + " (" + item.type + ")</td>" +
+                "<td>" + item.operating_hours + "</td>" +
+                "<td class='fee-info'>종류: " + item.fee_on + "<br>특이사항: " + item.fee_off + "</td>" +
+                "<td>" + item.extra_info + "</td>";
+            
+            tableBody.appendChild(row);
+        });
+    </script>
+</body>
+</html>

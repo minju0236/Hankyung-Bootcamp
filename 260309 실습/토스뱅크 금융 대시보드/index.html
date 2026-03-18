@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>토스뱅크 금융 데이터 대시보드</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="data.js"></script>
+    <style>
+        .dashboard { display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; }
+        .chart-box { width: 600px; border: 1px solid #eee; padding: 15px; border-radius: 12px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <h1>Toss Bank Financial Analytics</h1>
+    
+    <div class="dashboard">
+        <div class="chart-box">
+            <h3>연간 여수신 성장 추이</h3>
+            <canvas id="financeTrendChart"></canvas>
+        </div>
+
+        <div class="chart-box" style="width: 400px;">
+            <h3>고객 자산 구성비</h3>
+            <canvas id="assetDoughnutChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // 2. data.js에 정의된 tossBankData 객체를 사용하여 차트 생성
+
+        // [시나리오 1: 혼합 차트 - 선(예금) + 막대(대출)]
+        const trendCtx = document.getElementById('').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'bar', 
+            data: {
+                labels: tossBankData.timeline.months, // 외부 변수 로딩
+                datasets: [
+                    {
+                        type: 'line',
+                        label: '총 예금 잔액',
+                        data: tossBankData.timeline.deposits,
+                        borderColor: '#0050FF', // 토스 블루 컬러
+                        borderWidth: 3,
+                        fill: false
+                    },
+                    {
+                        label: '신규 대출 실행액',
+                        data: tossBankData.timeline.loans,
+                        backgroundColor: 'rgba(0, 80, 255, 0.2)',
+                        borderRadius: 5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: { y: { beginAtZero: true, title: { display: true, text: '(단위: 억 원)' } } }
+            }
+        });
+
+        // [시나리오 2: 도넛 차트 - 자산 비중]
+        const assetCtx = document.getElementById('assetDoughnutChart').getContext('2d');
+        new Chart(assetCtx, {
+            type: 'doughnut',
+            data: {
+                labels: tossBankData.portfolio.categories, // 외부 변수 로딩
+                datasets: [{
+                    data: tossBankData.portfolio.ratios,
+                    backgroundColor: ['#0050FF', '#3182F6', '#4EABF8', '#A0D3FF', '#E8F3FF']
+                }]
+            },
+            options: {
+                plugins: { legend: { position: 'right' } },
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>토스뱅크 - 홈</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* [1] 레이아웃 설계 (이전 구조 유지) */
+        body {
+            margin: 0;
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 280px 1fr 1fr;
+            grid-template-rows: 70px 1fr 1fr;
+            background-color: #f2f4f6;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            color: #191f28;
+        }
+
+        .header { 
+            grid-column: 1 / 4;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 100;
+            border-bottom: 1px solid #e5e8eb;
+        }
+
+        .toss-logo { color: #3182f6; font-size: 1.4rem; font-weight: 800; text-decoration: none; }
+
+        .sidebar { 
+            grid-column: 1;
+            grid-row: 2 / 4; 
+            background-color: #ffffff;
+            border-right: 1px solid #e5e8eb;
+            padding: 20px;
+        }
+
+        .menu-link { text-decoration: none; display: block; margin-bottom: 4px; }
+        .menu-item {
+            padding: 14px 20px;
+            border-radius: 12px;
+            color: #4e5968;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .menu-item:hover { background-color: #f9fafb; color: #3182f6; }
+        .menu-item.active { background-color: #f2f4f6; color: #191f28; }
+
+        /* [2] 메인 콘텐츠: 대시보드 구성 */
+        .main-content { 
+            grid-column: 2 / 4; 
+            grid-row: 2 / 4; 
+            padding: 24px; 
+            overflow-y: auto; 
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2열 배치 */
+            grid-auto-rows: min-content;
+            gap: 20px; 
+        }
+
+        .toss-card { 
+            background: white; 
+            border-radius: 24px; 
+            padding: 24px 30px;
+        }
+
+        /* 전체 너비 카드 */
+        .full-card { grid-column: 1 / 3; }
+
+        .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #191f28; }
+        .amount-big { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+        
+        canvas { width: 100% !important; max-height: 300px; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="home.html" class="toss-logo">toss bank</a>
+        <div style="color: #6b7684; font-weight: 600;">마이페이지</div>
+    </header>
+
+    <aside class="sidebar">
+        <a href="home.html" class="menu-link"><div class="menu-item active">홈</div></a>
+        <a href="account.html" class="menu-link"><div class="menu-item">내 계좌</div></a>
+        <a href="finance.html" class="menu-link"><div class="menu-item">금융 상품</div></a>
+        <a href="transfer.html" class="menu-link"><div class="menu-item">송금하기</div></a>
+        <a href="customer.html" class="menu-link"><div class="menu-item">나의 금융상식</div></a>
+        <a href="atm.html" class="menu-link"><div class="menu-item">ATM 찾기</div></a>
+    </aside>
+
+    <main class="main-content">
+        <div class="toss-card full-card">
+            <div class="card-title">이번 달 총 지출</div>
+            <div class="amount-big" id="total-withdraw" style="color: #f04452;">0원</div>
+            <p style="color: #6b7684; font-size: 0.9rem;">지난달보다 <span id="diff-text" style="font-weight: 600;">--</span> 더 썼어요</p>
+        </div>
+
+        <div class="toss-card">
+            <div class="card-title">지출 카테고리 분석</div>
+            <canvas id="categoryChart"></canvas>
+        </div>
+
+        <div class="toss-card">
+            <div class="card-title">주간 지출 추이</div>
+            <canvas id="trendChart"></canvas>
+        </div>
+    </main>
+
+    <script src="account.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const formatter = new Intl.NumberFormat('ko-KR');
+
+            // [1] 데이터 전처리 (account.js 분석)
+            let totalWithdraw = 0;
+            const categoryMap = {}; // 카테고리별 합계
+            const dailyWithdraw = {}; // 날짜별 합계
+
+            accountData.forEach(item => {
+                if (item.type === 'withdraw') {
+                    const amount = Math.abs(item.amount);
+                    totalWithdraw += amount;
+
+                    // 카테고리 추출 (이름에서 첫 단어 기준 간단 분류)
+                    const category = item.name.split(' ')[0];
+                    categoryMap[category] = (categoryMap[category] || 0) + amount;
+
+                    // 날짜 추출 (YYYY.MM.DD)
+                    const date = item.date.split(' ')[0];
+                    dailyWithdraw[date] = (dailyWithdraw[date] || 0) + amount;
+                }
+            });
+
+            // 상단 총 지출 표시
+            document.getElementById('total-withdraw').innerText = formatter.format(totalWithdraw) + '원';
+            document.getElementById('diff-text').innerText = formatter.format(Math.floor(totalWithdraw * 0.1)) + '원';
+
+            // [2] 카테고리 파이 차트 (상위 5개)
+            const catLabels = Object.keys(categoryMap).slice(0, 5);
+            const catData = catLabels.map(label => categoryMap[label]);
+
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: catLabels,
+                    datasets: [{
+                        data: catData,
+                        backgroundColor: ['#3182f6', '#4e5968', '#f04452', '#fac710', '#2de2b5'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } } },
+                    cutout: '70%'
+                }
+            });
+
+            // [3] 주간 지출 추이 라인 차트
+            const trendLabels = Object.keys(dailyWithdraw).reverse().slice(-7);
+            const trendData = trendLabels.map(label => dailyWithdraw[label]);
+
+            new Chart(document.getElementById('trendChart'), {
+                type: 'line',
+                data: {
+                    labels: trendLabels.map(l => l.split('.')[2] + '일'),
+                    datasets: [{
+                        label: '지출액',
+                        data: trendData,
+                        borderColor: '#3182f6',
+                        backgroundColor: 'rgba(49, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { display: false },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

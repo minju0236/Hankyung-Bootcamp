@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>토스뱅크 - 금융 상품</title>
+    <style>
+        /* [1] 공통 레이아웃 유지 */
+        body {
+            margin: 0;
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 280px 1fr 1fr;
+            grid-template-rows: 70px 1fr 1fr;
+            background-color: #f2f4f6;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            color: #191f28;
+        }
+
+        .header {
+            grid-column: 1 / 4;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 100;
+            border-bottom: 1px solid #e5e8eb;
+        }
+
+        .toss-logo {
+            color: #3182f6;
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .sidebar {
+            grid-column: 1;
+            grid-row: 2 / 4;
+            background-color: #ffffff;
+            border-right: 1px solid #e5e8eb;
+            padding: 20px;
+        }
+
+        .menu-link {
+            text-decoration: none;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .menu-item {
+            padding: 14px 20px;
+            border-radius: 12px;
+            color: #4e5968;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .menu-item:hover {
+            background-color: #f9fafb;
+            color: #3182f6;
+        }
+
+        .menu-item.active {
+            background-color: #f2f4f6;
+            color: #191f28;
+        }
+
+        /* [2] 메인 콘텐츠: 상품 추천 리스트 */
+        .main-content {
+            grid-column: 2 / 4;
+            grid-row: 2 / 4;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .toss-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .toss-card:hover {
+            transform: translateY(-4px);
+            cursor: pointer;
+        }
+
+        .analysis-banner {
+            background: linear-gradient(135deg, #3182f6, #2169d2);
+            color: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 10px;
+        }
+
+        .product-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.2rem;
+        }
+
+        .product-info p {
+            margin: 0;
+            color: #6b7684;
+            font-size: 0.9rem;
+        }
+
+        .toss-card .product-info p {
+            color: #4e5968;
+        }
+
+        .badge {
+            background: #f2f4f6;
+            color: #3182f6;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .interest-rate {
+            color: #3182f6;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .btn-apply {
+            background: #f2f4f6;
+            color: #4e5968;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="home.html" class="toss-logo">toss bank</a>
+        <div style="color: #6b7684; font-weight: 600;">마이페이지</div>
+    </header>
+
+    <aside class="sidebar">
+        <a href="home.html" class="menu-link">
+            <div class="menu-item">홈</div>
+        </a>
+        <a href="account.html" class="menu-link">
+            <div class="menu-item">내 계좌</div>
+        </a>
+        <a href="finance.html" class="menu-link">
+            <div class="menu-item active">금융 상품</div>
+        </a>
+        <a href="transfer.html" class="menu-link">
+            <div class="menu-item">송금하기</div>
+        </a>
+        <a href="customer.html" class="menu-link">
+            <div class="menu-item">나의 금융상식</div>
+        </a>
+        <a href="atm.html" class="menu-link">
+            <div class="menu-item">ATM 찾기</div>
+        </a>
+    </aside>
+
+    <main class="main-content">
+        <div class="analysis-banner">
+            <h2 style="margin: 0 0 10px 0;">분석 결과, 님은 '스마트 저축가'형!</h2>
+            <p id="analysis-text" style="opacity: 0.9; margin: 0; line-height: 1.5;">계좌 데이터를 분석하여 최적의 상품을 찾아냈어요.</p>
+            <p id="min-cost-text" style="opacity: 0.9; margin: 0; line-height: 1.5;">계좌 데이터를 분석하여 최적의 상품을 찾아냈어요.</p>
+        </div>
+
+        <h2 style="font-size: 1.3rem; margin: 10px 0 5px 0;">맞춤 추천 상품</h2>
+
+        <div class="toss-card">
+            <div class="product-info">
+                <span class="badge">강력 추천</span>
+                <h3>토스뱅크 먼저 이자 받는 정기예금</h3>
+                <p>지금 바로 이자를 받고 시작하세요</p>
+            </div>
+            <div class="interest-rate">연 3.5%</div>
+        </div>
+
+        <div class="toss-card">
+            <div class="product-info">
+                <span class="badge">소비 분석 기반</span>
+                <h3>토스뱅크 신용카드</h3>
+                <p id="card-desc">스타벅스 이용이 많으시네요! 50% 할인 혜택</p>
+            </div>
+            <button class="btn-apply">자세히</button>
+        </div>
+
+        <div class="toss-card">
+            <div class="product-info">
+                <span class="badge">자산 관리</span>
+                <h3>굴리기 (투자)</h3>
+                <p>여유 자금을 똑똑하게 운용해보세요</p>
+            </div>
+            <div class="interest-rate" style="color: #f04452;">수익률 8.2%</div>
+        </div>
+    </main>
+
+    <script src="account.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // [분석 로직] account.js의 데이터를 분석
+            const totalBalance = accountData[0].balance;
+            const withdraws = accountData.filter(i => i.type === 'withdraw');
+            const totalSpent = withdraws.reduce((acc, curr) => acc + Math.abs(curr.amount), 0);
+
+            // 커피 소비 확인 (스타벅스 키워드)
+            const coffeeCount = withdraws.filter(i => i.name.includes('스타벅스')).length;
+            const chickenCount = withdraws.filter(i => i.name.includes('치킨')).length;
+
+            const analysisEl = document.getElementById('analysis-text');
+            const cardDescEl = document.getElementById('card-desc');
+
+            // 첫번째 방법
+            // const newCost = () => {
+            //     let minCost = 0;
+            //     let minCostName = "";
+            //     for (let i = 0; i < accountData.length; i++) {
+            //         // abs 사용시 절댓값을 반환하여 가장 큰 값인 급여 출력 - 지출이 아니라 수익임!
+            //         // 지출은 amount 중 마이너스 값임. 따라서 작은 값을 구해야 함
+            //         let newCost = accountData[i].amount;
+
+            //         if (newCost < minCost) {
+            //             minCostName = accountData[i].name;
+            //             minCost = Math.min(minCost, newCost);
+            //         }
+            //     }
+            //     return minCostName;
+            // }
+            // document.getElementById('min-cost-text').innerText = `가장 높은 지출은 ${newCost()}입니다.`;
+
+            // 두번째 방법
+            // 단순 sort() 사용시 -10000을 -100000보다 더 작게 봄
+            const maxAccount = accountData.sort((a, b) => a.amount - b.amount)[0];
+            console.log(maxAccount);
+            
+            document.getElementById('min-cost-text').innerText = `가장 높은 지출은 ${maxAccount.name}입니다.`;
+
+            // 1. 소비 성향 분석 텍스트 업데이트
+            if (totalBalance > 5000000) {
+                analysisEl.innerText = `현재 잔액이 ${new Intl.NumberFormat().format(totalBalance)}원으로 완전 부자시네요! FLEX 가시죠😎`;
+            } else {
+                analysisEl.innerText = `최근 한 달간 지출이 ${new Intl.NumberFormat().format(totalSpent)}원이에요. 자린고비시네요😖`;
+            }
+
+            // 2. 특정 소비 패턴 기반 멘트 업데이트
+            if (coffeeCount > 2) {
+                cardDescEl.innerText = `커피숍 방문이 잦으시네요! 혜택 챙기세요 💸`;
+            }
+
+            if (chickenCount > 2) {
+                cardDescEl.innerText = `치킨을 자주 시켜 드시네요! 오늘 저녁은 치킨이닭!🍗`;
+            }
+        });
+    </script>
+</body>
+
+</html>

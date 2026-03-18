@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도넛 차트</title>
+</head>
+
+<body>
+    <div style="width: 300px;"><canvas id="doughnutChart"></canvas></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+        new Chart(doughnutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['검색광고', 'SNS', '이메일', '기타'],
+                datasets: [{
+                    data: [40, 30, 20, 10],
+                    backgroundColor: ['#4bc0c0', '#ff9f40', '#9966ff', '#ffcd56']
+                }]
+            },
+            options: {
+                cutout: '60%' // 도넛 중앙 구멍 크기 조절
+            }
+        });
+    </script>
+</body>
+
+</html>

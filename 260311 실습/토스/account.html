@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>토스뱅크 - 내 계좌</title>
+    <style>
+        /* [1] 기본 레이아웃 (3x3 그리드) */
+        body {
+            margin: 0;
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 280px 1fr 1fr;
+            grid-template-rows: 70px 1fr 1fr;
+            background-color: #f2f4f6;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            color: #191f28;
+        }
+
+        /* [2] 상단 헤더 */
+        .header { 
+            grid-column: 1 / 4;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 100;
+            border-bottom: 1px solid #e5e8eb;
+        }
+
+        .toss-logo { 
+            color: #3182f6; 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        /* [3] 좌측 사이드바 내비게이션 */
+        .sidebar { 
+            grid-column: 1;
+            grid-row: 2 / 4; 
+            background-color: #ffffff;
+            border-right: 1px solid #e5e8eb;
+            padding: 20px;
+        }
+
+        .menu-link { text-decoration: none; display: block; margin-bottom: 4px; }
+        .menu-item {
+            padding: 14px 20px;
+            border-radius: 12px;
+            color: #4e5968;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .menu-item:hover { background-color: #f9fafb; color: #3182f6; }
+        .menu-item.active { background-color: #f2f4f6; color: #191f28; }
+
+        /* [4] 메인 콘텐츠 영역 */
+        .main-content { 
+            grid-column: 2 / 4; 
+            grid-row: 2 / 4; 
+            padding: 24px; 
+            overflow-y: auto; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+        }
+
+        .toss-card { background: white; border-radius: 24px; padding: 24px 30px; }
+
+        /* 잔액 및 버튼 스타일 */
+        .balance-label { color: #6b7684; font-size: 0.95rem; font-weight: 500; margin-bottom: 4px; }
+        .amount { font-size: 2rem; font-weight: 700; margin: 0; display: flex; align-items: baseline; }
+        .amount-unit { font-size: 1.5rem; font-weight: 600; margin-left: 4px; }
+
+        .btn-transfer {
+            background-color: #3182f6;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-transfer:hover { background-color: #2169d2; transform: translateY(-1px); }
+        .btn-transfer:active { transform: scale(0.96); }
+
+        /* [5] 거래 내역 테이블 및 컬러 시스템 */
+        .transaction-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .transaction-table th { text-align: left; padding: 12px 16px; color: #8b95a1; font-size: 0.85rem; border-bottom: 1px solid #f2f4f6; }
+        .transaction-table td { padding: 18px 16px; border-bottom: 1px solid #f9fafb; font-size: 0.95rem; }
+
+        /* 입출금 색상 구분 */
+        .type-deposit { color: #3182f6; font-weight: 600; } /* 입금: 파란색 */
+        .type-withdraw { color: #f04452; font-weight: 600; } /* 출금: 빨간색 */
+
+        .date-text { color: #8b95a1; font-size: 0.8rem; display: block; margin-bottom: 2px; }
+        .btn-more { width: 100%; padding: 16px; background: none; border: none; color: #6b7684; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+        .btn-more:hover { color: #3182f6; }
+        
+        /* 복사 버튼 애니메이션 */
+        .copy-btn {
+            background: #f2f4f6; border: none; padding: 4px 10px; border-radius: 6px; 
+            color: #4e5968; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="home.html" class="toss-logo">toss bank</a>
+        <div style="color: #6b7684; font-weight: 600;">마이페이지</div>
+    </header>
+
+    <aside class="sidebar">
+        <a href="home.html" class="menu-link"><div class="menu-item" id="nav-home">홈</div></a>
+        <a href="account.html" class="menu-link"><div class="menu-item active" id="nav-account">내 계좌</div></a>
+        <a href="finance.html" class="menu-link"><div class="menu-item" id="nav-finance">금융 상품</div></a>
+        <a href="transfer.html" class="menu-link"><div class="menu-item" id="nav-transfer">송금하기</div></a>
+        <a href="customer.html" class="menu-link"><div class="menu-item" id="nav-customer">나의 금융상식</div></a>
+        <a href="atm.html" class="menu-link"><div class="menu-item" id="nav-atm">ATM 찾기</div></a>
+    </aside>
+
+    <main class="main-content">
+        <div class="toss-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div class="balance-label">잔액</div>
+                    <div class="amount">
+                        <span id="account-balance">12,450,000</span><span class="amount-unit">원</span>
+                    </div>
+                </div>
+                <a href="transfer.html" class="btn-transfer">송금</a>
+            </div>
+            <div style="margin-top: 18px; display: flex; align-items: center; gap: 8px;">
+                <span style="color: #8b95a1; font-size: 0.85rem;">토스뱅크 1000-1234-5678</span>
+                <button class="copy-btn" onclick="copyAccountNumber()">복사</button>
+            </div>
+        </div>
+
+        <div class="toss-card">
+            <div style="font-weight: 700; font-size: 1.2rem; margin-bottom: 20px;">거래 내역</div>
+            <table class="transaction-table">
+                <thead>
+                    <tr>
+                        <th>일시</th>
+                        <th>내용</th>
+                        <th style="text-align: right;">금액</th>
+                        <th style="text-align: right;">잔액</th>
+                    </tr>
+                </thead>
+                <tbody id="transaction-list"></tbody>
+            </table>
+            <button id="show-more-btn" class="btn-more" onclick="renderAll()">전체 30일 내역 보기</button>
+        </div>
+    </main>
+
+    <script src="account.js"></script>
+    <script>
+        const formatter = new Intl.NumberFormat('ko-KR');
+        const listContainer = document.getElementById('transaction-list');
+
+        // [함수] 클립보드 복사 기능
+        function copyAccountNumber() {
+            const accountNumber = "1000-1234-5678";
+            navigator.clipboard.writeText(accountNumber).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerText = "복사됨";
+                btn.style.color = "#3182f6";
+                setTimeout(() => {
+                    btn.innerText = "복사";
+                    btn.style.color = "#4e5968";
+                }, 1500);
+            });
+        }
+
+        function renderRows(data) {
+            listContainer.innerHTML = data.map(item => {
+                const isDeposit = item.type === 'deposit';
+                const typeClass = isDeposit ? 'type-deposit' : 'type-withdraw';
+                const sign = isDeposit ? '+' : '';
+
+                return `
+                    <tr>
+                        <td><span class="date-text">${item.date}</span></td>
+                        <td><strong>${item.name}</strong></td>
+                        <td style="text-align: right;" class="${typeClass}">
+                            ${sign}${formatter.format(item.amount)} 원
+                        </td>
+                        <td style="text-align: right; color: #8b95a1;">${formatter.format(item.balance)} 원</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function init() {
+            if (typeof accountData !== 'undefined') {
+                document.getElementById('account-balance').innerText = formatter.format(accountData[0].balance);
+                renderRows(accountData.slice(0, 10)); // 초기 10개 출력
+            }
+        }
+
+        function renderAll() {
+            renderRows(accountData);
+            document.getElementById('show-more-btn').style.display = 'none';
+        }
+
+        init();
+    </script>
+</body>
+</html>

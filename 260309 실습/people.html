@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시도별 인구수</title>
+</head>
+
+<body>
+    <div style="width: 500px;"><canvas id="doughnutChart"></canvas></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const doughnutCtx = document.getElementById('doughnutChart').getContext('2d');
+        new Chart(doughnutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['서울', '부산', '대구', '인천', '광주', '대전', '울산', '세종', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주'],
+                datasets: [{
+                    data: [9421, 3303, 2372, 2975, 1470, 1472, 1114, 380, 13690, 1527, 1623, 2186, 1777, 1775, 2626, 3287, 675],
+                    backgroundColor: ['#FFADAD', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#BDB2FF', '#FFC6FF', '#A0C4FF', '#9BF6FF', '#CDEAC0', '#F1C0E8', '#CDB4DB', '#D0F4DE', '#FDE2E4', '#E2F0CB', '#C7CEEA', '#FFE5EC', '#E4C1F9']
+                }]
+            },
+            options: {
+                cutout: '60%' // 도넛 중앙 구멍 크기 조절
+            }
+        });
+    </script>
+</body>
+
+</html>

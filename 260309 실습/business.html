@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="margin: 0 auto; display: flex; max-width: 800px;">
+        <div style="width: 500px;"><canvas id="lineChart"></canvas></div>
+        <div style="width: 500px;"><canvas id="barChart"></canvas></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 1. 서버에서 받아왔다고 가정하는 JSON 데이터 객체
+        const salesReport = {
+            months: ['1월', '2월', '3월', '4월', '5월'],
+            amounts: [45, 52, 48, 70, 65]
+        };
+
+        // 2. 차트 생성 시 객체의 키값을 변수로 로딩하여 사용
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: salesReport.months, // JSON 객체의 키값1 로딩
+                datasets: [{
+                    label: '월별 매출액',
+                    data: salesReport.amounts, // JSON 객체의 키값2 로딩
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.3
+                }]
+            }
+        });
+
+        const barChart = document.getElementById('lineChart').getContext('2d');
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: salesReport.months, // JSON 객체의 키값1 로딩
+                datasets: [{
+                    label: '월별 매출액',
+                    data: salesReport.amounts, // JSON 객체의 키값2 로딩
+                    backgroundColor: ['rgb(75, 192, 192)'],
+                    tension: 0.3
+                }]
+            }
+        });
+    </script>
+</body>
+
+</html>

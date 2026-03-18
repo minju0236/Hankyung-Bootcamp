@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>토스뱅크 - 송금하기</title>
+    <style>
+        /* [1] 공통 레이아웃 유지 */
+        body {
+            margin: 0;
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 280px 1fr 1fr;
+            grid-template-rows: 70px 1fr 1fr;
+            background-color: #f2f4f6;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            color: #191f28;
+        }
+
+        .header { 
+            grid-column: 1 / 4;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 100;
+            border-bottom: 1px solid #e5e8eb;
+        }
+
+        .toss-logo { color: #3182f6; font-size: 1.4rem; font-weight: 800; text-decoration: none; }
+
+        .sidebar { 
+            grid-column: 1; grid-row: 2 / 4; 
+            background-color: #ffffff; border-right: 1px solid #e5e8eb; padding: 20px;
+        }
+
+        .menu-link { text-decoration: none; display: block; margin-bottom: 4px; }
+        .menu-item {
+            padding: 14px 20px; border-radius: 12px; color: #4e5968;
+            font-weight: 600; transition: 0.2s;
+        }
+        .menu-item:hover { background-color: #f9fafb; color: #3182f6; }
+        .menu-item.active { background-color: #f2f4f6; color: #191f28; }
+
+        /* [2] 메인 콘텐츠: 송금 UI */
+        .main-content { 
+            grid-column: 2 / 4; grid-row: 2 / 4; 
+            padding: 40px; overflow-y: auto; 
+            display: flex; flex-direction: column; align-items: center; gap: 30px;
+        }
+
+        .transfer-container { width: 100%; max-width: 500px; }
+
+        /* 검색바 스타일 */
+        .search-box {
+            background: white; border-radius: 18px; padding: 16px 24px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04); margin-bottom: 30px;
+        }
+        .search-box input {
+            border: none; outline: none; width: 100%; font-size: 1.1rem;
+            font-weight: 500; color: #191f28;
+        }
+
+        /* 최근 보낸 사람 가로 리스트 */
+        .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; color: #4e5968; }
+        
+        .recent-list { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 30px; }
+        .recent-item { 
+            display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; 
+            min-width: 70px; transition: transform 0.2s;
+        }
+        .recent-item:hover { transform: translateY(-5px); }
+        .avatar { 
+            width: 60px; height: 60px; background: #e8f3ff; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: #3182f6; font-weight: 700;
+        }
+        .name-label { font-size: 0.85rem; font-weight: 600; color: #4e5968; }
+
+        /* 계좌 리스트 카드 */
+        .contact-card {
+            background: white; border-radius: 24px; padding: 10px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .contact-item {
+            display: flex; align-items: center; gap: 16px; padding: 16px 24px;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .contact-item:hover { background: #f9fafb; }
+        .contact-info h4 { margin: 0; font-size: 1rem; font-weight: 600; }
+        .contact-info p { margin: 2px 0 0 0; font-size: 0.85rem; color: #8b95a1; }
+
+        /* 금액 입력 모달 (간이 구현) */
+        .amount-input-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 1000; display: none;
+            flex-direction: column; align-items: center; justify-content: center; padding: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="home.html" class="toss-logo">toss bank</a>
+        <div style="color: #6b7684; font-weight: 600;">마이페이지</div>
+    </header>
+
+    <aside class="sidebar">
+        <a href="home.html" class="menu-link"><div class="menu-item">홈</div></a>
+        <a href="account.html" class="menu-link"><div class="menu-item">내 계좌</div></a>
+        <a href="finance.html" class="menu-link"><div class="menu-item">금융 상품</div></a>
+        <a href="transfer.html" class="menu-link"><div class="menu-item active">송금하기</div></a>
+        <a href="customer.html" class="menu-link"><div class="menu-item">나의 금융상식</div></a>
+        <a href="atm.html" class="menu-link"><div class="menu-item">ATM 찾기</div></a>
+    </aside>
+
+    <main class="main-content">
+        <div class="transfer-container">
+            <h2 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 30px; letter-spacing: -1px;">어디로 돈을 보낼까요?</h2>
+            
+            <div class="search-box">
+                <span style="font-size: 1.2rem; color: #adb5bd;">🔍</span>
+                <input type="text" placeholder="이름, 계좌번호 또는 연락처 입력">
+            </div>
+
+            <div class="section-title">최근 보낸 사람</div>
+            <div class="recent-list" id="recent-transfer-list">
+                </div>
+
+            <div class="section-title">내 계좌 및 친구</div>
+            <div class="contact-card">
+                <div class="contact-item">
+                    <div class="avatar" style="width: 44px; height: 44px; font-size: 1.1rem; background: #f2f4f6; color: #6b7684;">나</div>
+                    <div class="contact-info">
+                        <h4>내 토스뱅크 통장</h4>
+                        <p>1000-1234-5678</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="avatar" style="width: 44px; height: 44px; font-size: 1.1rem; background: #fff0f0; color: #f04452;">❤️</div>
+                    <div class="contact-info">
+                        <h4>엄마</h4>
+                        <p>국민은행 400201-04-123456</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="account.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // [데이터 분석] account.js에서 최근 출금 내역 중 중복되지 않는 이름 추출
+            const recentTransfers = [];
+            const namesSeen = new Set();
+
+            accountData.forEach(item => {
+                // 입금이 아니고, 일반적인 상점 이름이 아닌 경우(사람 이름으로 추정되는 것 위주)
+                if (item.type === 'withdraw' && !item.name.includes('편의점') && !item.name.includes('스타벅스')) {
+                    const firstName = item.name.split(' ')[0];
+                    if (!namesSeen.has(firstName) && recentTransfers.length < 5) {
+                        recentTransfers.push(firstName);
+                        namesSeen.add(firstName);
+                    }
+                }
+            });
+
+            const recentListEl = document.getElementById('recent-transfer-list');
+            
+            // 분석된 최근 거래자 리스트 생성
+            recentTransfers.forEach(name => {
+                const div = document.createElement('div');
+                div.className = 'recent-item';
+                div.innerHTML = `
+                    <div class="avatar">${name[0]}</div>
+                    <div class="name-label">${name}</div>
+                `;
+                recentListEl.appendChild(div);
+            });
+        });
+    </script>
+</body>
+</html>

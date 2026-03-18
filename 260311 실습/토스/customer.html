@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>토스뱅크 - 나의 금융상</title>
+    <style>
+        /* [1] 공통 레이아웃 유지 */
+        body {
+            margin: 0;
+            display: grid;
+            height: 100vh;
+            grid-template-columns: 280px 1fr 1fr;
+            grid-template-rows: 70px 1fr 1fr;
+            background-color: #f2f4f6;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            color: #191f28;
+        }
+
+        .header { 
+            grid-column: 1 / 4;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 100;
+            border-bottom: 1px solid #e5e8eb;
+        }
+
+        .toss-logo { color: #3182f6; font-size: 1.4rem; font-weight: 800; text-decoration: none; }
+
+        .sidebar { 
+            grid-column: 1; grid-row: 2 / 4; 
+            background-color: #ffffff; border-right: 1px solid #e5e8eb; padding: 20px;
+        }
+
+        .menu-link { text-decoration: none; display: block; margin-bottom: 4px; }
+        .menu-item {
+            padding: 14px 20px; border-radius: 12px; color: #4e5968;
+            font-weight: 600; transition: 0.2s;
+        }
+        .menu-item:hover { background-color: #f9fafb; color: #3182f6; }
+        .menu-item.active { background-color: #f2f4f6; color: #191f28; }
+
+        /* [2] 메인 콘텐츠: 퀴즈 UI */
+        .main-content { 
+            grid-column: 2 / 4; grid-row: 2 / 4; 
+            padding: 40px; overflow-y: auto; 
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .quiz-container { width: 100%; max-width: 700px; }
+        
+        .name-section { 
+            background: white; border-radius: 20px; padding: 24px; 
+            margin-bottom: 30px; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .name-input { 
+            flex: 1; padding: 12px; border: 1px solid #e5e8eb; 
+            border-radius: 10px; font-size: 16px; outline: none;
+        }
+
+        .card { 
+            background: white; border-radius: 24px; padding: 30px; 
+            margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .q-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; line-height: 1.5; }
+        
+        .option-item { 
+            display: block; width: 100%; padding: 16px; margin: 10px 0; 
+            border: 1px solid #f2f4f6; border-radius: 14px; text-align: left; 
+            cursor: pointer; background: #f9fafb; font-size: 1rem; font-weight: 500;
+            transition: all 0.2s;
+        }
+        .option-item:hover { background: #f2f4f6; }
+        .option-item.selected { background: #3182f6; color: white; border-color: #3182f6; }
+
+        .btn-submit { 
+            display: block; width: 100%; padding: 20px; background: #3182f6; 
+            color: white; border: none; border-radius: 18px; font-size: 1.1rem; 
+            font-weight: 700; cursor: pointer; margin-top: 20px;
+        }
+
+        .result-card { 
+            background: #ffffff; border-radius: 24px; padding: 40px; 
+            text-align: center; display: none; width: 100%;
+        }
+        .wrong-item { 
+            text-align: left; padding: 20px; border-bottom: 1px solid #f2f4f6; 
+            margin-top: 10px;
+        }
+        .wrong-q { font-weight: 700; color: #f04452; margin-bottom: 8px; }
+        .explanation { background: #fff0f0; padding: 12px; border-radius: 10px; font-size: 0.9rem; color: #4e5968; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="home.html" class="toss-logo">toss bank</a>
+        <div style="color: #6b7684; font-weight: 600;">금융상식 퀴즈</div>
+    </header>
+
+    <aside class="sidebar">
+        <a href="home.html" class="menu-link"><div class="menu-item">홈</div></a>
+        <a href="account.html" class="menu-link"><div class="menu-item">내 계좌</div></a>
+        <a href="finance.html" class="menu-link"><div class="menu-item">금융 상품</div></a>
+        <a href="transfer.html" class="menu-link"><div class="menu-item">송금하기</div></a>
+        <a href="customer.html" class="menu-link"><div class="menu-item active">나의 금융상식</div></a>
+        <a href="atm.html" class="menu-link"><div class="menu-item">ATM 찾기</div></a>
+    </aside>
+
+    <main class="main-content">
+        <div id="quiz-view" class="quiz-container">
+            <h1 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 10px;">나의 금융상식 점검</h1>
+            <p style="color: #6b7684; margin-bottom: 30px;">기초적인 금융 지식을 테스트해보세요.</p>
+            
+            <div class="name-section">
+                <label style="font-weight: 600;">응시자 성함</label>
+                <input type="text" id="user-name" class="name-input" placeholder="이름을 입력해주세요">
+            </div>
+
+            <div id="quiz-list"></div>
+            <button class="btn-submit" onclick="showResult()">채점 및 결과 확인</button>
+        </div>
+
+        <div id="result-view" class="quiz-container result-card">
+            <h2 id="score-text" style="font-size: 2.2rem; color: #3182f6;">0점</h2>
+            <p id="user-info" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 30px;"></p>
+            
+            <div style="text-align: left; border-top: 2px solid #f2f4f6; padding-top: 20px;">
+                <h3 style="margin-bottom: 15px;">오답 노트 및 해설</h3>
+                <div id="wrong-answers"></div>
+            </div>
+            
+            <button class="btn-submit" style="background: #f2f4f6; color: #4e5968; margin-top: 40px;" onclick="location.reload()">다시 풀기</button>
+        </div>
+    </main>
+
+    <script src="finance.js"></script>
+
+    <script>
+        const userAnswers = {};
+
+        function render() {
+            const list = document.getElementById('quiz-list');
+            // finance.js에서 로드된 financeData 사용
+            list.innerHTML = financeData.map((q, qIdx) => `
+                <div class="card">
+                    <div class="q-title">${q.id}. ${q.question}</div>
+                    ${q.options.map((opt, oIdx) => `
+                        <button class="option-item" id="opt-${qIdx}-${oIdx}" onclick="select(${qIdx}, ${oIdx})">
+                            ${oIdx + 1}. ${opt}
+                        </button>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function select(qIdx, oIdx) {
+            document.querySelectorAll(`[id^="opt-${qIdx}-"]`).forEach(b => b.classList.remove('selected'));
+            document.getElementById(`opt-${qIdx}-${oIdx}`).classList.add('selected');
+            userAnswers[qIdx] = oIdx;
+        }
+
+        function showResult() {
+            const name = document.getElementById('user-name').value.trim();
+            if (!name) return alert("성함을 입력해주세요.");
+            if (Object.keys(userAnswers).length < financeData.length) return alert("모든 문제를 풀어주세요.");
+
+            let score = 0;
+            const wrongContainer = document.getElementById('wrong-answers');
+            wrongContainer.innerHTML = '';
+
+            financeData.forEach((q, idx) => {
+                if (userAnswers[idx] === q.answer) {
+                    score += 5;
+                } else {
+                    const div = document.createElement('div');
+                    div.className = 'wrong-item';
+                    div.innerHTML = `
+                        <div class="wrong-q">Q${q.id}. ${q.question}</div>
+                        <div style="margin-bottom:8px;">내 선택: <span style="color:#f04452">${q.options[userAnswers[idx]]}</span></div>
+                        <div style="margin-bottom:12px; font-weight:600;">정답: <span style="color:#3182f6">${q.options[q.answer]}</span></div>
+                        <div class="explanation">💡 해설: ${q.explanation}</div>
+                    `;
+                    wrongContainer.appendChild(div);
+                }
+            });
+
+            document.getElementById('quiz-view').style.display = 'none';
+            document.getElementById('result-view').style.display = 'block';
+            document.getElementById('score-text').innerText = `${score}점`;
+            document.getElementById('user-info').innerText = `${name}님의 금융 상식 결과`;
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        // 페이지 로드 시 실행
+        if (typeof financeData !== 'undefined') {
+            render();
+        }
+    </script>
+</body>
+</html>

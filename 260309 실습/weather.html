@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="width: 500px;"><canvas id="lineChart"></canvas></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: ['16시', '17시', '18시', '19시', '20시', '21시', '22시', '23시', '0시', '1시', '2시', '3시', '4시'],
+                datasets: [{
+                    label: '날씨',
+                    data: [7, 6, 7, 6, 5, 4, 3, 3, 2, 2, 1, 1, 1],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.3, // 선의 곡선화
+                    fill: true,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)'
+                }]
+            }
+        });
+    </script>
+</body>
+
+</html>
