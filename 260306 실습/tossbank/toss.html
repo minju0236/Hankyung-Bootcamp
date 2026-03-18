@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>토스뱅크 | 먼저 이자 받는 정기예금</title>
+    <style>
+        /* 0. 초기화 및 #wrapper 정의 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, sans-serif;
+            background: #f2f4f6;
+            color: #191f28;
+            line-height: 1.6;
+        }
+
+        /* wrapper 정의: 전체 구조의 중심 */
+        #wrapper {
+            width: 100%;
+            min-width: 600px;
+            /* 레이아웃 깨짐 방지 */
+            margin: 0 auto;
+        }
+
+        /* (1) Fixed: 상단 네비게이션 */
+        .toss-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            /* RGBA (Red, Green, Blue, Alpha) : RGB 색상(0~255)에 투명도(Alpha, 0~1)를 결합하여, 요소 전체가 아닌 배경색만 투명하게 조절하는 방식. */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            z-index: 9999;
+        }
+
+        /* 로고 이미지 크기 최적화 (헤더 60px에 맞춤) */
+        .logo-img {
+            height: 40px;
+            display: block;
+            cursor: pointer;
+        }
+
+        .btn-app {
+            background: #e8f3ff;
+            color: #1b64da;
+            padding: 7px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* 레이아웃 기반 (Float) */
+        .container {
+            margin-top: 100px;
+            padding: 0 10%;
+            max-width: 1060px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content {
+            float: left;
+            width: 66%;
+        }
+
+        /* Sticky가 움직일 공간 확보 */
+        .side-panel {
+            float: right;
+            width: 30%;
+            min-height: 1600px;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        /* (4) Sticky: 가입 유도 카드 */
+        .sticky-card {
+            position: sticky;
+            top: 100px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .rate-value {
+            font-size: 2rem;
+            /* 1 rem은 기본 폰트크기(16px) */
+            font-weight: bold;
+            color: #3182f6;
+            margin-bottom: 20px;
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 16px;
+            background: #3182f6;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* (2) Relative & Absolute: 배너 위 배지 */
+        .product-box {
+            position: relative;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .product-box img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 32px;
+        }
+
+        .badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: #3182f6;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            font-weight: bold;
+            margin-top: 30px;
+            letter-spacing: -1px;
+        }
+
+        /* (3) Float: 기획자 인터뷰 */
+        .interview {
+            background: #fff;
+            padding: 45px;
+            border-radius: 32px;
+            margin-top: 40px;
+        }
+
+        .maker-photo {
+            float: left;
+            width: 150px;
+            height: 150px;
+            border-radius: 28px;
+            margin: 0 30px 10px 0;
+            object-fit: cover;
+        }
+
+        /* (5) Footer */
+        .toss-footer {
+            background: #f9fafb;
+            padding: 60px 10% 80px;
+            color: #8b95a1;
+            font-size: 0.85rem;
+            clear: both;
+            margin-top: 80px;
+        }
+
+        .footer-logo {
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            margin-top: 30px;
+            border-top: 1px solid #e5e8eb;
+            padding-top: 20px;
+        }
+
+        .footer-links a {
+            margin-right: 20px;
+            font-weight: 600;
+            color: #6b7684;
+            text-decoration: none;
+        }
+
+        /* 스크롤 테스트용 여백 */
+        .footer-space {
+            height: 1000px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <header class="toss-header">
+            <a href="#"><img src="./logo.jpg" alt="Toss Bank Logo" class="logo-img"></a>
+            <div class="btn-app">앱에서 열기</div>
+        </header>
+
+        <main class="container clearfix">
+            <aside class="side-panel">
+                <div class="sticky-card">
+                    <p style="color: #6b7684;">최고 연</p>
+                    <p class="rate-value">3.5%</p>
+                    <button class="apply-btn">지금 시작하기</button>
+                </div>
+            </aside>
+
+            <section class="content">
+                <article class="product-box">
+                    <img src="./상품이미지.jpeg" alt="상품 이미지">
+                    <span class="badge">D-3 마감</span>
+                    <h1 class="main-title">이자를 기다리지 마세요<br>지금 바로 받으세요</h1>
+                </article>
+
+                <article class="interview">
+                    <img src="기획자.jpeg" class="maker-photo" alt="기획자">
+                    <p>
+                        "금융은 원래 어려워서는 안 됩니다. 우리는 '기다리는 이자'가 아닌 '지금 당장 받는 즐거움'을 드리고 싶었습니다.
+                        사진 옆으로 글자가 흐르는 이 배치처럼, 금융 서비스도 당신의 일상에 자연스럽게 흐를 수 있도록 설계했습니다.
+                        불필요한 선을 없애고 여백을 살려 핵심 정보인 '이자'를 가장 먼저 확인하도록 설계했습니다."
+                    </p>
+                </article>
+
+
+            </section>
+        </main>
+
+        <footer class="toss-footer">
+            <div class="footer-content">
+                <img src="./logo.png" alt="Toss Footer Logo" class="footer-logo">
+                <p>토스뱅크(주) | 사업자 등록번호 : 123-45-67890</p>
+                <p>서울특별시 강남구 테헤란로 142, 아크플레이스 12층</p>
+                <div class="footer-links">
+                    <a href="#">서비스 이용약관</a>
+                    <a href="#">개인정보 처리방침</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+</html>

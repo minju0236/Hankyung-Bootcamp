@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>토스뱅크 | 먼저 이자 받는 정기예금</title>
+    <style>
+        /* 기본 설정: 토스 특유의 폰트와 배경색 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, sans-serif;
+            background: #f2f4f6;
+            color: #191f28;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* (1) 브랜드 인지: 상단 고정 (Fixed) */
+        .toss-header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            z-index: 9999;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #3182f6;
+        }
+
+        .btn-app {
+            background: #e8f3ff;
+            color: #1b64da;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* 레이아웃 기반 (Float) */
+        .container {
+            margin-top: 90px;
+            padding: 0 10%;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            height: calc(100vh + 60px);
+        }
+
+        .content {
+            float: left;
+            width: 68%;
+        }
+
+        .side-panel {
+            position: relative;
+            float: right;
+            width: 28%;
+            height: 100%;
+        }
+
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        /* (4) 사용자 편의: 퀵 메뉴 고정 (Sticky) */
+        .sticky-menu {
+            position: sticky;
+            top: 90px;
+            background: #fff;
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .sticky-menu h4 {
+            font-size: 0.9rem;
+            color: #4e5968;
+            margin-bottom: 15px;
+        }
+
+        .sticky-menu button {
+            width: 100%;
+            padding: 12px;
+            background: #3182f6;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* (2) 프로모션 강조: 상품 배지 (Relative & Absolute) */
+        .product-card {
+            position: relative;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            border-radius: 32px;
+        }
+
+        .badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: #3182f6;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        .popularity {
+            position: absolute;
+            top: 55px;
+            right: 10px;
+            background: #f63131;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        /* (3) 기획자 인터뷰: 텍스트 감싸기 (Float) */
+        .interview {
+            background: #fff;
+            padding: 40px;
+            border-radius: 32px;
+        }
+
+        .maker-img {
+            float: left;
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            margin: 0 24px 12px 0;
+            object-fit: cover;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        /* 하단 공간 */
+        .extra {
+            height: 800px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <header class="toss-header">
+            <div class="logo">tossbank</div>
+            <div class="btn-app">앱에서 열기</div>
+        </header>
+
+        <main class="container clearfix">
+            <aside class="side-panel">
+                <div class="sticky-menu">
+                    <h4>최고 연 3.5%</h4>
+                    <button>지금 가입하기</button>
+                </div>
+            </aside>
+
+            <section class="content">
+                <article class="product-card">
+                    <img src="https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=800" alt="예금 상품">
+                    <span class="badge">D-3 마감</span>
+                    <span class="popularity">HOT</span>
+                    <h2 class="title">먼저 이자 받는 정기예금</h2>
+                </article>
+
+                <article class="interview">
+                    <h3>상품 기획자 인터뷰</h3>
+                    <br>
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400" class="maker-img"
+                        alt="기획자">
+                    <p>
+                        "금융은 원래 어려워서는 안 된다고 생각합니다.
+                        우리는 '기다리는 이자'가 아닌 '지금 당장 받는 즐거움'을 드리고 싶었습니다.
+                        사진 옆으로 글자가 흐르는 이 배치처럼, 금융 서비스도 당신의 일상에 자연스럽게
+                        흐를 수 있도록 설계했습니다. 토스뱅크가 제안하는 새로운 예금의 정의를
+                        지금 바로 경험해 보시길 바랍니다. 우리는 언제나 당신의 시간을 아끼는 방향으로 움직입니다."
+                    </p>
+                </article>
+
+                <div class="extra"></div>
+            </section>
+        </main>
+    </div>
+
+</body>
+
+</html>
