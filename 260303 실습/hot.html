@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-width: 800px;
+        }
+
+        /* 2. 플렉스 컨테이너 (Header) */
+        .header-container {
+            display: flex;
+            /* 플렉스 레이아웃 선언 */
+            justify-content: space-between;
+            /* 자식 요소들을 양 끝으로 배치 */
+            align-items: center;
+            /* 세로축 중앙 정렬 */
+            padding: 0 40px;
+            /* 좌우 내 여백 */
+            height: 80px;
+            /* 헤더 높이 */
+            background-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 2px 5px rgba(255, 110, 110, 0.3);
+        }
+
+        /* 3. 로고 스타일 */
+
+        .logo img {
+            height: 80px;
+            /* 헤더 높이(80px)보다 작게 설정하여 여유 공간 확보 */
+            width: auto;
+            /* 가로 세로 비율 유지 */
+            display: block;
+            /* 하단 미세 공백 제거 */
+        }
+
+        .search {
+            position: relative;
+        }
+
+        .search-form {
+            width: 250px;
+            padding: 10px;
+            border-color: rgba(255, 110, 110, 0.3);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0px;
+            padding: 10px;
+            background-color: #ff4757;
+            color: #f0f0f0;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* 4. 내비게이션 (메뉴 항목들도 Flex로 정렬) */
+        .nav-menu {
+            display: flex;
+            /* 메뉴 아이템들도 가로로 나열 */
+            gap: 30px;
+            /* 메뉴 사이 간격 */
+            list-style: none;
+            /* 불렛 제거 */
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: rgb(21, 21, 21);
+            font-weight: 500;
+        }
+
+        .nav-menu li a:hover {
+            color: #3498db;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            width: 520px;
+            height: 300px;
+        }
+
+        /* CSS 스타일 */
+        .card {
+            position: relative;
+            /* 자식의 기준점이 됨 */
+            width: 250px;
+            height: 300px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+
+        .photo img {
+            width: 100%;
+        }
+
+        .close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .badge {
+            position: absolute;
+            /* 일반 흐름에서 이탈하여 공중에 뜸 */
+            bottom: 15px;
+            /* 부모 상단 경계에서 15px 아래로 */
+            right: 15px;
+            /* 부모 우측 경계에서 15px 왼쪽으로 */
+
+            padding: 5px 10px;
+            background-color: #ff4757;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-container">
+
+        <div class="logo">
+            <a href="#">
+                <img src="shoes-logo.jpg" alt="로고">
+            </a>
+        </div>
+
+        <div class="search">
+            <input type="text" class="search-form" placeholder="검색할 내용을 입력하세요">
+            <button class="search-btn">검색</button>
+        </div>
+
+
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#">운동화</a></li>
+                <li><a href="#">부츠</a></li>
+                <li><a href="#">구두</a></li>
+                <li><a href="#">실내화</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="cards">
+            <div class="card">
+                <img src="close.png" class="close" />
+                <div class="photo">
+                    <img src="shoes1.jpg" />
+                </div>
+                <span class="badge">SALE</span>
+            </div>
+            <div class="card">
+                <img src="close.png" class="close" />
+                <div class="photo">
+                    <img src="shoes2.jpg" />
+                </div>
+                <span class="badge">SALE</span>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

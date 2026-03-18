@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main {
+            float: left;
+            width: 70%;
+            height: 400px;
+            background: #f9f9f9;
+        }
+
+        .sidebar {
+            float: right;
+            width: 30%;
+            height: 400px;
+            background: #e2e2e2;
+        }
+
+        .footer {
+            clear: both;
+            /* float의 영향력을 완전히 차단하여 아래 배치 */
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper clearfix">
+        <main class="main">본문 (70%)</main>
+        <aside class="sidebar">사이드바 (30%)</aside>
+    </div>
+    <footer class="footer">푸터 영역</footer>
+</body>
+
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toss Bank</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        color: #171717;
+        font-family: Inter;
+    }
+
+    body {
+        min-width: 1200px;
+    }
+
+    .container {
+        width: 1200px;
+        margin: 0 auto;
+    }
+
+    .wrap {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    header {
+        width: 100%;
+        height: 105px;
+        border-bottom: 1px solid #EEEEEE;
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        gap: 42px;
+    }
+
+    .logo {
+        width: 250px;
+        height: 64px;
+    }
+
+    .gnb {
+        display: flex;
+        gap: 40px;
+    }
+
+    .gnb li {
+        color: #585858;
+        font-size: 20px;
+        font-weight: 700;
+        list-style: none;
+        cursor: pointer;
+        line-height: 64px;
+    }
+
+    .gnb li:hover {
+        color: #171717;
+    }
+
+    .login {
+        width: 96px;
+        height: 53px;
+        border-radius: 15px;
+        background: #3182F6;
+        color: #FFF;
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        line-height: 53px;
+        border: none;
+        margin-right: 50px;
+        cursor: pointer;
+    }
+
+    .login:hover {
+        background: #204FF5;
+    }
+
+    main {
+        width: 900px;
+        height: 667px;
+        border-radius: 30px;
+        background: linear-gradient(118deg, rgba(226, 255, 243, 0.75) 0%, rgba(193, 227, 255, 0.72) 41.83%, #FFF 100%);
+        padding: 56px 0px 0px 67px;
+        position: relative;
+        box-sizing: border-box;
+    }
+
+    .sub-title {
+        color: #3182F6;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 22px;
+    }
+
+    .title {
+        color: #171717;
+        font-size: 64px;
+        font-weight: 700;
+        margin-bottom: 59px;
+    }
+
+    main p {
+        line-height: 25px;
+    }
+
+    main p span {
+        font-weight: 700;
+    }
+
+    main img {
+        position: absolute;
+        right: 73px;
+        bottom: 0px;
+    }
+
+    aside {
+        width: 260px;
+        height: 667px;
+        border-radius: 30px;
+        border: 1px solid #EEE;
+        padding: 46px 0px 0px 25px;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    aside ul {
+        display: flex;
+        flex-direction: column;
+        gap: 34px;
+    }
+
+    aside li {
+        color: #585858;
+        font-weight: 700;
+        list-style: none;
+        cursor: pointer;
+    }
+
+    aside li:hover {
+        color: #171717;
+    }
+
+    .wink_icon {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        right: 12px;
+        bottom: 15px;
+    }
+
+    .smile_icon {
+        width: 36px;
+        height: 36px;
+        transform: rotate(-11deg);
+        position: absolute;
+        right: 54px;
+        bottom: 66px;
+    }
+
+    footer {
+        width: 100%;
+        height: 172px;
+        background: #F6F7F9;
+        padding-top: 24px;
+        margin-top: 40px;
+    }
+
+    .company-name {
+        color: #171717;
+        font-size: 18px;
+        margin: 0 0 29px 50px;
+    }
+
+    footer p {
+        color: #8FA1B2;
+        font-size: 15px;
+        margin-left: 50px;
+    }
+
+    footer p span {
+        text-decoration: underline;
+        color: #8FA1B2;
+    }
+</style>
+
+<body>
+    <!--헤더-->
+    <header>
+        <div class="container">
+            <div class="wrap">
+                <img class="logo" src="img/logo.png" alt="토스 뱅크 로고">
+                <nav>
+                    <ul class="gnb">
+                        <li>회사 소개</li>
+                        <li>공지사항</li>
+                        <li>고객센터</li>
+                        <li>자주 묻는 질문</li>
+                    </ul>
+                    <button class="login">로그인</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="wrap">
+            <!--메인-->
+            <main>
+                <div class="sub-title">부트 캠프</div>
+                <div class="title">토스 뱅크</div>
+                <p>
+                    <span>한국 경제 신문 with 토스 뱅크</span>에 오신 여러분들 환영합니다.<br>
+                    위 과정은 6개월 과정으로 풀스택 과정을 수료합니다.<br>
+                    남은 기간 동안 좋은 성과를 만들어 나갑시다.<br>
+                </p>
+                <img src="img/toss_phone.png" alt="토스 핸드폰 이미지">
+            </main>
+
+            <!--어사이드-->
+            <aside>
+                <ul>
+                    <li>계좌 개설</li>
+                    <li>토스뱅크 상품</li>
+                    <li>대출 알아보기</li>
+                    <li>금리 안내</li>
+                </ul>
+                <img class="wink_icon" src="img/wink_icon.png" alt="윙크 아이콘">
+                <img class="smile_icon" src="img/smile_icon.png" alt="스마일 아이콘">
+            </aside>
+        </div>
+    </div>
+
+    <!--푸터-->
+    <footer>
+        <div class="container">
+            <div class="company-name">㈜비바리퍼블리카</div>
+            <p>
+                사업자 등록번호 : 120-88-01280 | 대표 : 이승건<br>
+                호스팅 서비스 : 주식회사 비바리퍼블리카 | 통신판매업 신고번호 : 2014-서울강남-03377 <span>사업자정보확인</span><br>
+                06236 서울특별시 강남구 테헤란로 142, 4층, 10층, 11층, 12층, 13층, 22층, 23층 (역삼동, 아크플레이스)<br>
+                고객센터 : 서울시 구로구 경인로662, 디큐브시티 12층, 13층 토스씨엑스
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>

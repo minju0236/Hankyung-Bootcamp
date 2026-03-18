@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 부모: 기준점 설정 */
+        .parent-box {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background-color: #f8f9fa;
+            border: 2px dashed #adb5bd;
+        }
+
+        /* 자식: 중앙 정렬 로직 */
+        .center-item {
+            position: absolute;
+
+            /* 부모의 50% 지점으로 꼭짓점 이동 */
+            top: 50%;
+            left: 50%;
+
+            /* 자기 크기의 절반만큼 역방향 이동하여 중심점 일치 */
+            transform: translate(-50%, -50%);
+
+            /* 스타일링 */
+            padding: 15px 30px;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent-box">
+        <div class="center-item">
+            정중앙 정렬
+        </div>
+    </div>
+</body>
+
+</html>

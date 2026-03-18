@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Flex Header 실습</title>
+    <style>
+        /* 1. 박스모델 및 기본 초기화 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            background-color: #2C2C2C;
+        }
+
+        /* 2. 플렉스 컨테이너 (Header) */
+        .header-container {
+            display: flex;
+            /* 플렉스 레이아웃 선언 */
+            justify-content: space-between;
+            /* 자식 요소들을 양 끝으로 배치 */
+            align-items: center;
+            /* 세로축 중앙 정렬 */
+            padding: 0 40px;
+            /* 좌우 내 여백 */
+            height: 80px;
+            /* 헤더 높이 */
+            background-color: rgba(16, 16, 19, 0.7);
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.3);
+        }
+
+        /* 3. 로고 스타일 */
+
+        .logo img {
+            height: 30px;
+            /* 헤더 높이(80px)보다 작게 설정하여 여유 공간 확보 */
+            width: auto;
+            /* 가로 세로 비율 유지 */
+            display: block;
+            /* 하단 미세 공백 제거 */
+        }
+
+
+        /* 4. 내비게이션 (메뉴 항목들도 Flex로 정렬) */
+        .nav-menu {
+            display: flex;
+            /* 메뉴 아이템들도 가로로 나열 */
+            gap: 30px;
+            /* 메뉴 사이 간격 */
+            list-style: none;
+            /* 불렛 제거 */
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+        }
+
+        .nav-menu li a:hover {
+            color: #3498db;
+        }
+
+        .container {
+            margin: 50px 50px;
+        }
+
+        .wrap {
+            display: flex;
+            justify-content: space-between;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+
+        main {
+            background-color: white;
+            border-radius: 20px;
+            width: 73%;
+            height: 100%;
+            padding: 30px;
+        }
+
+        h1 {
+            background-color: white;
+        }
+
+        p {
+            background-color: white;
+        }
+
+        aside {
+            background-color: white;
+            border-radius: 20px;
+            width: 25%;
+            height: 100%;
+            padding: 30px;
+        }
+
+        aside ul li {
+            background-color: white;
+        }
+
+        footer {
+            background-color: white;
+            border-radius: 20px;
+            width: 100%;
+            height: 80px;
+            font-size: 8px;
+            display: flex;
+            padding: 10px;
+        }
+
+        footer div {
+            background-color: white;
+            height: 50px;
+            margin-right: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header-container">
+        <div class="logo">
+            <a href="#">
+                <img src="https://static.toss.im/logos/svg/logo-bank-mono-white.svg" alt="로고">
+            </a>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#">은행소개</a></li>
+                <li><a href="#">통장</a></li>
+                <li><a href="#">예금적금</a></li>
+                <li><a href="#">대출</a></li>
+                <li><a href="#">외환</a></li>
+                <li><a href="#">카드</a></li>
+                <li><a href="#">고객센터</a></li>
+                <li><a href="#">채용</a></li>
+                <li><a href="#">기업뱅킹</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="wrap">
+            <main>
+                <h1>토스뱅크란?</h1>
+                <p><br>2021년 10월 출범한 토스뱅크(Toss Bank)는 지점 없는<br>제1금융권 인터넷 전문 은행입니다.<br><br>
+                    토스 앱을 통해 2% 통장, 지금 이자 받기, 중저신용자 대출 등 사용자 중심의<br>
+                    단순하고 높은 혜택을 제공하며, 연 흑자 전환에 성공하여 5년 내 글로벌 <br>진출을 목표로 하는 혁신 금융 기업입니다.</p>
+            </main>
+            <aside>
+                <ul>
+                    <li>누적 가입자 수: 0000000명</li>
+                    <li>연간 흑자 달성: 0000000원</li>
+                    <li>설립 연도: 20XX년</li>
+                </ul>
+            </aside>
+        </div>
+        <footer>
+            <div>
+                고객센터<br>
+                전화 : 1661-7654(24시간 연중무휴)<br>
+                해외전화 : +82-2-6975-9000<br>
+                이메일 : help@tossbank.com
+            </div>
+            <div>
+                토스뱅크㈜<br>
+                사업자 등록번호 : 462-86-01671<br>
+                주소 : 06133 서울특별시 강남구 테헤란로 131, 13층 (역삼동, 한국지식재산센터)<br>
+                대표 : 이은미
+            </div>
+            <div>
+                개인정보 처리방침<br>
+                보호금융상품등록부<br>
+                이용자유의사항<br>
+                공지사항
+            </div>
+            <div>
+                상품공시실<br>
+                경영공시<br>
+                준법제보 외부채널<br>
+                직원 고충 접수 채널<br>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+</html>

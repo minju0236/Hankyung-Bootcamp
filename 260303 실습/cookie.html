@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Fixed & Sticky 실습 완성본</title>
+  <style>
+    /* 0. 기본 초기화 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; line-height: 1.6; background: #f9f9f9; }
+
+    /* ③ 반투명 상단 고정 헤더 (Fixed) */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 60px;
+      background: rgba(51, 51, 51, 0.8); /* 반투명 배경 */
+      color: white;
+      display: flex; align-items: center; padding: 0 20px;
+      backdrop-filter: blur(5px); /* 배경 흐림 효과 */
+      z-index: 1000;
+    }
+
+    /* 헤더 때문에 가려지는 공간 확보 */
+    .container { margin-top: 80px; padding: 0 50px; display: flex; gap: 30px; }
+
+    /* ② 부모 박스를 넘지 않는 스크롤 목차 (Sticky) */
+    .content-box { display: flex; flex: 1; gap: 20px; align-items: flex-start; }
+    
+    .sidebar-toc {
+      position: sticky;
+      top: 80px; /* 헤더 아래에서 고정 시작 */
+      width: 200px;
+      background: #eee; padding: 15px;
+      border-radius: 8px;
+    }
+
+    .main-text { flex: 1; background: white; padding: 30px; min-height: 2000px; }
+
+    /* ④ 표(Table)의 첫 번째 행 고정 (Sticky) */
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { 
+      position: sticky; 
+      top: 60px; /* 헤더 바로 아래에 붙도록 설정 */
+      background: #3498db; color: white; 
+    }
+
+    /* ① 스크롤 시 따라오는 퀵 메뉴 (Fixed) */
+    .quick-menu {
+      position: fixed;
+      top: 50%; right: 20px;
+      transform: translateY(-50%);
+      width: 80px; background: orange; color: white;
+      padding: 10px; text-align: center; border-radius: 10px;
+      font-size: 12px; cursor: pointer; z-index: 999;
+    }
+
+    /* ⑤ 하단 쿠키 동의 바 (Fixed) */
+    .cookie-bar {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%; height: 50px;
+      background: #222; color: #ccc;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 30px; font-size: 13px; z-index: 1001;
+    }
+    .cookie-bar button { background: orange; border: none; padding: 5px 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">MY WEBSITE (Fixed Header)</header>
+
+  <div class="quick-menu">상담하기<br>SNS</div>
+
+  <main class="container">
+    <div class="content-box">
+      <aside class="sidebar-toc">
+        <h4>목차 (Sticky)</h4>
+        <ul>
+          <li>소개</li>
+          <li>특징</li>
+          <li>데이터 표</li>
+        </ul>
+      </aside>
+
+      <section class="main-text">
+        <h2>본문 영역 (이 영역이 길어야 실습 확인 가능)</h2>
+        <p>스크롤을 내리면 왼쪽 목차는 부모 박스가 끝날 때까지만 따라오고,</p>
+        <p>상단 헤더와 퀵 메뉴는 화면에 계속 붙어 있습니다.</p>
+
+        <table>
+          <thead>
+            <tr><th>번호</th><th>항목</th><th>내용</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>데이터</td><td>스크롤 시 파란색 줄이 고정됩니다.</td></tr>
+            <script>
+              for(let i=2; i<=30; i++) {
+                document.write(`<tr><td>${i}</td><td>데이터 항목</td><td>상세 내용 ${i}</td></tr>`);
+              }
+            </script>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </main>
+
+  <div class="cookie-bar">
+    <span>이 사이트는 쿠키를 사용합니다. 동의하시겠습니까?</span>
+    <button>확인</button>
+  </div>
+
+</body>
+</html>

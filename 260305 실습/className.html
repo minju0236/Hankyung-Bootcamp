@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Position 실습 - 클래스명 일치</title>
+  <style>
+    /* 전체 레이아웃 */
+    body { padding: 50px; line-height: 1.5; font-family: sans-serif; }
+    
+    /* 원래 자리를 보여주기 위한 가이드 점선 박스 */
+    .guide {
+      width: 250px;
+      height: 120px;
+      border: 2px dashed #ccc;
+      margin-bottom: 60px; /* 박스 간 간격 */
+      background-color: #f9f9f9;
+      position: relative; /* 가이드 텍스트 배치를 위해 사용 */
+    }
+
+    /* 공통 박스 스타일 */
+    .box {
+      width: 250px;
+      height: 120px;
+      color: white;
+      padding: 20px;
+      font-weight: bold;
+      border: 2px solid #333;
+    }
+
+    /* ① .box-static: 좌표 속성이 무시됨 (점선 안에 그대로 있음) */
+    .box-static {
+      position: static;
+      top: 40px;          /* 무시됨 */
+      left: 40px;         /* 무시됨 */
+      background-color: #34495e;
+    }
+
+    /* ② .box-relative: 원래 자리(점선)를 기준으로 이동함 */
+    .box-relative {
+      position: relative;
+      top: 40px;          /* 원래 위치에서 40px 아래로 */
+      left: 40px;         /* 원래 위치에서 40px 오른쪽으로 */
+      background-color: #e67e22;
+      z-index: 10;        /* 다른 요소 위에 보이게 설정 */
+    }
+
+    span { color: #e74c3c; font-size: 14px; }
+    
+  </style>
+</head>
+<body>
+
+  <h1>Position 속성 비교</h1>
+
+  <div class="guide">
+    <span>[원래 자리] position: static</span>
+    <div class="box box-static">
+      .box-static <br>
+      이동하지 않음
+    </div>
+  </div>
+
+  <div class="guide">
+    <span>[원래 자리] position: relative</span>
+    <div class="box box-relative">
+      .box-relative <br>
+      40px씩 이동함!
+    </div>
+  </div>
+
+</body>
+</html>

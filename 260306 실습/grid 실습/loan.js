@@ -1,0 +1,22 @@
+const loanData = [
+  { "id": 1, "loanId": "LNK-2024-001", "customer": "박서준", "amount": "50,000,000", "interestRate": "4.2%", "status": "정상 상환", "address": "서울시 강남구 테헤란로 152", "phone": "010-1234-5678", "photo": "박서준.png" },
+  { "id": 2, "loanId": "LNK-2024-002", "customer": "이지안", "amount": "12,000,000", "interestRate": "5.8%", "status": "30일 미만 연체", "address": "부산시 해운대구 우동 145", "phone": "010-2345-6789", "photo": "이지안.png" },
+  { "id": 3, "loanId": "LNK-2024-003", "customer": "최현우", "amount": "85,000,000", "interestRate": "3.9%", "status": "정상 상환", "address": "대구시 수성구 범어동 22", "phone": "010-3456-7890", "photo": "최현우.png" },
+  { "id": 4, "loanId": "LNK-2024-004", "customer": "김도윤", "amount": "250,000,000", "interestRate": "4.5%", "status": "완납", "address": "인천시 연수구 송도동 88", "phone": "010-4567-8901", "photo": "김도윤.png" },
+  { "id": 5, "loanId": "LNK-2024-005", "customer": "정하은", "amount": "3,000,000", "interestRate": "12.5%", "status": "단기 연체", "address": "광주시 북구 용봉동 300", "phone": "010-5678-9012", "photo": "정하은.png" },
+  { "id": 6, "loanId": "LNK-2024-006", "customer": "윤준서", "amount": "45,000,000", "interestRate": "4.1%", "status": "정상 상환", "address": "대전시 서구 둔산로 10", "phone": "010-6789-0123", "photo": "윤준서.png" },
+  { "id": 7, "loanId": "LNK-2024-007", "customer": "한소희", "amount": "15,000,000", "interestRate": "6.2%", "status": "심사 중", "address": "울산시 남구 삼산로 210", "phone": "010-7890-1234", "photo": "한소희.png" },
+  { "id": 8, "loanId": "LNK-2024-008", "customer": "강민호", "amount": "7,500,000", "interestRate": "4.8%", "status": "정상 상환", "address": "경기도 수원시 팔달구 효원로 1", "phone": "010-8901-2345", "photo": "강민호.png" },
+  { "id": 9, "loanId": "LNK-2024-009", "customer": "조예지", "amount": "120,000,000", "interestRate": "3.5%", "status": "정상 상환", "address": "경기도 성남시 분당구 판교역로 2", "phone": "010-9012-3456", "photo": "조예지.png" },
+  { "id": 10, "loanId": "LNK-2024-010", "customer": "임채원", "amount": "300,000,000", "interestRate": "3.2%", "status": "정상 상환", "address": "서울시 마포구 독막로 50", "phone": "010-1111-2222", "photo": "임채원.png" },
+  { "id": 11, "loanId": "LNK-2024-011", "customer": "서태웅", "amount": "22,000,000", "interestRate": "5.5%", "status": "90일 이상 연체", "address": "경기도 고양시 일산동구 80", "phone": "010-2222-3333", "photo": "서태웅.png" },
+  { "id": 12, "loanId": "LNK-2024-012", "customer": "백승우", "amount": "18,500,000", "interestRate": "4.0%", "status": "정상 상환", "address": "전주시 완산구 홍산로 15", "phone": "010-3333-4444", "photo": "백승우.png" },
+  { "id": 13, "loanId": "LNK-2024-013", "customer": "문지현", "amount": "60,000,000", "interestRate": "4.3%", "status": "완납", "address": "부산시 수영구 광안해변로 12", "phone": "010-4444-5555", "photo": "문지현.png" },
+  { "id": 14, "loanId": "LNK-2024-014", "customer": "송우진", "amount": "9,000,000", "interestRate": "7.1%", "status": "심사 중", "address": "서울시 송파구 올림픽로 300", "phone": "010-5555-6666", "photo": "송우진.png" },
+  { "id": 15, "loanId": "LNK-2024-015", "customer": "권유리", "amount": "42,000,000", "interestRate": "4.9%", "status": "정상 상환", "address": "대구시 중구 국채보상로 580", "phone": "010-6666-7777", "photo": "권유리.png" },
+  { "id": 16, "loanId": "LNK-2024-016", "customer": "황민규", "amount": "28,000,000", "interestRate": "4.6%", "status": "정상 상환", "address": "경기도 용인시 기흥구 33", "phone": "010-7777-8888", "photo": "황민규.png" },
+  { "id": 17, "loanId": "LNK-2024-017", "customer": "신아영", "amount": "35,000,000", "interestRate": "5.2%", "status": "단기 연체", "address": "제주시 노형로 100", "phone": "010-8888-9999", "photo": "신아영.png" },
+  { "id": 18, "loanId": "LNK-2024-018", "customer": "양준호", "amount": "150,000,000", "interestRate": "3.8%", "status": "심사 중", "address": "서울시 종로구 세종대로 209", "phone": "010-9999-0000", "photo": "양준호.png" },
+  { "id": 19, "loanId": "LNK-2024-019", "customer": "오지민", "amount": "5,500,000", "interestRate": "6.5%", "status": "정상 상환", "address": "청주시 상당구 중앙로 120", "phone": "010-1010-2020", "photo": "오지민.png" },
+  { "id": 20, "loanId": "LNK-2024-020", "customer": "배성원", "amount": "210,000,000", "interestRate": "3.4%", "status": "정상 상환", "address": "서울시 서초구 반포대로 15", "phone": "010-2020-3030", "photo": "배성원.png" }
+];

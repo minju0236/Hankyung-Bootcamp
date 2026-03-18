@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국경제</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            color: #121212;
+            font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', 'Apple SD Gothic Neo',
+                'Apple SD 산돌고딕 Neo', 'Malgun Gothic', '맑은 고딕',
+                'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            letter-spacing: -0.04em;
+        }
+
+        .container {
+            min-width: 1200px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            padding: 40px 0 24px;
+        }
+
+        header img {
+            width: 220px;
+            height: 50px;
+        }
+
+        nav {
+            width: 100%;
+            height: 44px;
+            margin-bottom: 16px;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #000;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        ul {
+            display: flex;
+            gap: 24px;
+        }
+
+        li {
+            list-style: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        li:hover {
+            text-decoration: underline;
+        }
+
+        .search {
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .search img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .banner {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #002742;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+
+        .banner img {
+            width: 800px;
+        }
+
+
+        .module {
+            height: 427.4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .module-list {
+            width: 270px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .module-main-img {
+            width: 100%;
+        }
+
+        .module-list hr {
+            height: 1px;
+            background-color: #ddd;
+            border: none;
+        }
+
+        .module-item {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .module-item-img {
+            width: 120px;
+            height: 75px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .module-main {
+            width: 579.99px;
+            height: 100%;
+            position: relative;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+            padding: 0 24px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .module-main img {
+            width: 100%;
+            height: 339px;
+            object-fit: cover;
+        }
+
+        .module-main-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            min-height: 160px;
+            padding: 70px 24px 20px;
+            box-sizing: border-box;
+            z-index: 2;
+
+            background: linear-gradient(to top,
+                    #071d39 0px,
+                    #071d39 106px,
+                    rgba(7, 29, 57, 0.8) 120px,
+                    rgba(7, 29, 57, 0.4) 140px,
+                    rgba(7, 29, 57, 0) 100%);
+
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .news {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #000;
+            margin: 30px 0;
+            padding-top: 16px;
+        }
+
+        .news-section {
+            font-size: 18px;
+            width: 48%;
+        }
+
+        .news-section-title {
+            font-weight: bolder;
+            margin-bottom: 20px;
+        }
+
+        .news-grid {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .news-item {
+            width: 48%;
+            padding: 16px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .news-item-category .opinion-text {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .news-item-category {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        .opinion-item {
+            width: 48%;
+            display: flex;
+            padding: 16px 50px 16px 0px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .opinion-author-img {
+            position: absolute;
+            top: 16px;
+            right: 10px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <!--헤더-->
+    <div class="container">
+        <header>
+            <img src="img/logo-hk.svg" alt="한국경제 로고">
+        </header>
+    </div>
+
+    <!--GNB-->
+    <nav>
+        <div class="container">
+            <ul>
+                <li style="color: #D54049;">한경 코리아 마켓</li>
+                <li style="color: #00847F;">한경글로벌마켓</li>
+                <li style="color: #0D797C;">집코노미</li>
+                <li>오피니언</li>
+                <li>경제</li>
+                <li>산업</li>
+                <li>국제</li>
+                <li style="color: #B20A6A;">Wave</li>
+                <li>게임</li>
+                <li>모닝루틴</li>
+                <li style="color: #7B5F32;">프리미엄</li>
+                <li>더보기</li>
+            </ul>
+            <div class="search">
+                AI 경제루틴, 한경ALICE
+                <img src="img/search.png" alt="돋보기 아이콘">
+            </div>
+        </div>
+    </nav>
+
+    <!--메인-->
+    <main>
+        <div class="container">
+            <!--배너-->
+            <div class="banner">
+                <img src="img/banner.png" alt="배너 이미지">
+            </div>
+
+            <!--모듈-->
+            <div class="module">
+                <div class="module-list">
+                    <img class="module-main-img" src="img/kakao.jpg" alt="카카오">
+                    <p>카카오, 9년 만에 '카카오TV' 서비스 종료 결정 <span style="color: #436F91;">강해령의 테크앤더시티</span></p>
+                    <hr>
+                    <p>'한국 AI 네트워크 어벤저스' 나왔다…KT, 첫 대표 의장사 선정 <span style="color: #436F91;">MWC 2026</span></p>
+                    <hr>
+                    <p>'중동 사태' 여파…두바이 체류하던 관광객 79명 오늘 입국</p>
+                    <hr>
+                    <p>속보 안권섭 "엄희준·김동희, 주임검사에 '문지석 패싱' 지시 확인"</p>
+                </div>
+
+                <div class="module-main">
+                    <img src="img/oil.jpg" alt="등유">
+                    <div class="module-main-text">
+                        <span style="color: #EE4C4C;">단독</span> 국제 '등유 가격' 하루 만에 77% 뛰었다<br>
+                        <span style="font-size: 16px; font-weight: 400;">호르무즈 봉쇄 여파...서민 연료비 우려</span>
+                    </div>
+                </div>
+
+                <div class="module-list">
+                    <div class="module-item">
+                        <img class="module-item-img"
+                            src="https://img.hankyung.com/data/service/edit_img/202603/3228672a9270b09de77522b8a4fad4a6.jpg"
+                            alt="강남3구·용산구 집값 2주 연속 하락…수도권 전역 매물 확대">
+                        <p>강남3구·용산구 집값 2주 연속 하락…수도권 전역 매물 확대</p>
+                    </div>
+                    <hr>
+                    <div class="module-item">
+                        <img class="module-item-img" src="https://img.hankyung.com/photo/202603/01.43496583.3.jpg"
+                            alt="이틀간 폭락 후 분위기 반전…코스피 10%대 폭등세">
+                        <p>이틀간 폭락 후 분위기 반전…코스피 10%대 폭등세</p>
+                    </div>
+                    <hr>
+                    <div class="module-item">
+                        <img class="module-item-img"
+                            src="https://img.hankyung.com/data/service/edit_img/202603/c024120f2fcff87067ed110b832901e9.jpg"
+                            alt="李 대통령 &quot;유류 최고가격 지정 필요…'바가지' 제재해야&quot;">
+                        <p>李 대통령 &quot;유류 최고가격 지정 필요…'바가지' 제재해야&quot;</p>
+                    </div>
+                    <hr>
+                    <div class="module-item">
+                        <img class="module-item-img" src="https://img.hankyung.com/photo/202603/ZA.43488965.3.jpg"
+                            alt="내수 둔화에 이란 공습·美 압박까지…중국, 성장 눈높이 낮췄다">
+                        <p>내수 둔화에 이란 공습·美 압박까지…중국, 성장 눈높이 낮췄다</p>
+                    </div>
+                </div>
+            </div>
+
+            <!--하위 뉴스-->
+            <div class="news">
+                <div class="news-section">
+                    <div class="news-section-title">회원전용 ></div>
+
+                    <div class="news-grid">
+
+                        <div class="news-row">
+                            <div class="news-item">
+                                <p class="news-item-category">고수들의 포트폴리오</p>
+                                <p class="news-item-title">
+                                    <span class="news-badge">회원</span>
+                                    "이번엔 반등" 예상한 서학개미, 美 증시서 韓 ETF '올인'
+                                </p>
+                            </div>
+
+                            <div class="news-item">
+                                <p class="news-item-category">오늘의 유가</p>
+                                <p class="news-item-title">
+                                    <span class="news-badge">회원</span>
+                                    美, 원유시장 불안 달래기…IB는 유가 전망치 조정
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="news-row">
+                            <div class="news-item">
+                                <p class="news-item-category">고수들의 포트폴리오</p>
+                                <p class="news-item-title">
+                                    <span class="news-badge">회원</span>
+                                    고수들, 금등 하이닉스 팔고 S-Oil로 '이동'
+                                </p>
+                            </div>
+
+                            <div class="news-item">
+                                <p class="news-item-category">김현석의 월스트리트나우</p>
+                                <p class="news-item-title">
+                                    <span class="news-badge">회원</span>
+                                    "유가 정점 찍으면 기술주부터 뛴다"…빅테크, SW 폭등
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="news-row">
+                            <div class="news-item">
+                                <p class="news-item-category">원자재 포커스</p>
+                                <p class="news-item-title">
+                                    <span class="news-badge">회원</span>
+                                    달러 강세에도 오른 금값…저가 매수에 다시 상승
+                                </p>
+                            </div>
+
+                            <div class="news-item">
+                                <p class="news-item-category">오늘의 유가</p>
+                                <p class="news-item-title">
+                                    <span class="news-badge">회원</span>
+                                    호르무즈 해협 봉쇄 여파에 국제유가 4% 이상 급등
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="news-section opinion-section">
+
+                    <div class="news-section-title">오피니언 ></div>
+
+                    <div class="news-grid">
+
+                        <div class="news-row">
+
+                            <div class="opinion-item">
+                                <div class="opinion-text">
+                                    <p class="news-item-category">사설</p>
+                                    <p class="news-item-title">
+                                        17년 만에 환율 1500원 터치…금융시장 비상 대책 강구해야
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="news-item opinion-item">
+                                <div class="opinion-text">
+                                    <p class="news-item-category">데스크 칼럼</p>
+                                    <p class="news-item-title">
+                                        '정책대결' 기대되는 서울시장 선거
+                                    </p>
+                                </div>
+                                <img class="opinion-author-img" src="img/person.png" alt="필자">
+                            </div>
+
+                        </div>
+
+
+                        <div class="news-row">
+
+                            <div class="news-item opinion-item">
+                                <div class="opinion-text">
+                                    <p class="news-item-category">취재수첩</p>
+                                    <p class="news-item-title">
+                                        "2000명 풀었다"…'인해전술'로 MWC 점령한 화웨이
+                                    </p>
+                                </div>
+                                <img class="opinion-author-img" src="img/person.png" alt="필자">
+                            </div>
+
+                            <div class="news-item opinion-item">
+                                <div class="opinion-text">
+                                    <p class="news-item-category">다산칼럼</p>
+                                    <p class="news-item-title">
+                                        신입 한은 총재가 갖춰야 할 조건
+                                    </p>
+                                </div>
+                                <img class="opinion-author-img" src="img/person.png" alt="필자">
+                            </div>
+
+                        </div>
+
+
+                        <div class="news-row">
+
+                            <div class="news-item opinion-item">
+                                <div class="opinion-text">
+                                    <p class="news-item-category">한경에세이</p>
+                                    <p class="news-item-title">
+                                        파리에서 만나는 농업
+                                    </p>
+                                </div>
+                                <img class="opinion-author-img" src="img/person.png" alt="필자">
+                            </div>
+
+                            <div class="news-item opinion-item">
+                                <div class="opinion-text">
+                                    <p class="news-item-category">천자칼럼</p>
+                                    <p class="news-item-title">
+                                        모사드 파워
+                                    </p>
+                                </div>
+                                <img class="opinion-author-img" src="img/person.png" alt="필자">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* 기본 스타일 */
+    #main-title { transition: all 0.5s; padding: 10px; }
+    
+    /* JS에서 추가할 클래스 */
+    .active { 
+      background-color: #f0f0f0; 
+      border-left: 10px solid #007bff; 
+    }
+  </style>
+</head>
+<body>
+
+  <h1 id="main-title">DOM 학습 전</h1>
+  <button id="change-btn">스타일 및 내용 수정</button>
+
+  <script>
+    // 1. 객체 가져오기
+    const titleObj = document.getElementById('main-title');
+    const btn = document.getElementById('change-btn');
+
+    // 2. 버튼 클릭 시 객체의 CSS 관련 속성 변경
+    btn.onclick = () => {
+      // (1) 텍스트 내용 변경
+      titleObj.textContent = "DOM 객체 제어 중!";
+
+      // (2) 직접적인 인라인 스타일 수정 (style 객체 접근)
+      titleObj.style.color = "blue";
+      titleObj.style.fontSize = "40px"; // CSS의 font-size는 JS에서 camelCase로 작성
+
+      // (3) 클래스 교체 (클래스 속성 통째로 변경)
+      titleObj.className = "active";
+
+      console.log("변경 후 객체의 스타일 정보:");
+      console.dir(titleObj.style); // style 객체 내부 확인
+    };
+  </script>
+</body>
+</html>

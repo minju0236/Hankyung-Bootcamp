@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 상단 고정 바 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: #333;
+            color: #fff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+        }
+
+        /* 전체 컨테이너 (상단바 높이만큼 마진 확보) */
+        .container {
+            margin-top: 80px;
+            /* navbar(60px) + 여유공간(20px) */
+            padding: 0 20px;
+        }
+
+        /* 사이드바와 본문의 가로 배치 */
+        .content-box {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            /* sticky 작동을 위한 필수 설정 */
+        }
+
+        /* 끈질기게 따라오는 사이드바 */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            /* 화면 상단 80px 지점에서 고정 */
+            width: 200px;
+            height: 300px;
+            background: #f4f4f4;
+            padding: 15px;
+        }
+
+        /* 본문 영역 (추가된 부분) */
+        .main-text {
+            flex: 1;
+            /* 남는 가로 공간을 모두 점유 */
+            min-height: 1500px;
+            /* 스크롤을 만들기 위한 강제 높이 */
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+
+        /* 우측 하단 고정 버튼 */
+        .top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 10px 20px;
+            background: orange;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">상단 고정 메뉴 (Fixed)</header>
+
+    <main class="container">
+        <div class="content-box">
+            <aside class="sidebar">사이드바 (Sticky)</aside>
+            <section class="main-text">본문 내용 (스크롤 가능 영역)</section>
+        </div>
+    </main>
+
+    <button class="top-btn">TOP</button>
+</body>
+
+</html>

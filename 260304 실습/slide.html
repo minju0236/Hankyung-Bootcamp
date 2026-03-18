@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM 실습 - 이미지 슬라이더</title>
+  <style>
+    /* CSS: 슬라이더 외형 디자인 */
+    body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f4f4f4; font-family: sans-serif; }
+    .slider-card { width: 500px; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+    
+    #slider-img { 
+      width: 100%; height: 300px; object-fit: cover; border-radius: 10px; 
+      border: 4px solid #333; transition: transform 0.3s; 
+    }
+
+    #counter { font-size: 1.2rem; font-weight: bold; margin: 15px 0; color: #555; }
+    
+    .btn-group button { 
+      padding: 10px 25px; font-size: 16px; cursor: pointer; border: none; 
+      border-radius: 5px; background: #333; color: white; transition: 0.2s; 
+    }
+    .btn-group button:hover { background: #555; }
+    .btn-group button:active { transform: scale(0.95); }
+  </style>
+</head>
+<body>
+
+  <div class="slider-card">
+    <img id="slider-img" src="https://picsum.photos/id/10/500/300" alt="슬라이드">
+    <div id="counter">1 / 5</div>
+    
+    <div class="btn-group">
+      <button id="prev-btn">이전</button>
+      <button id="next-btn">다음</button>
+    </div>
+  </div>
+
+  <script>
+    // 2. DOM 요소 선택 (객체 가져오기)
+    const imgObj = document.getElementById('slider-img');
+    const countObj = document.getElementById('counter');
+
+    // 3. 데이터 준비 (이미지 주소 5개 배열)
+    const images = [
+      "https://picsum.photos/id/10/500/300",
+      "https://picsum.photos/id/20/500/300",
+      "https://picsum.photos/id/30/500/300",
+      "https://picsum.photos/id/40/500/300",
+      "https://picsum.photos/id/50/500/300"
+    ];
+
+    let index = 0;
+
+    // 4. 화면 업데이트 함수 (객체 속성 조작 핵심)
+    function updateSlider() {
+      // img 객체의 src 속성을 변경 (이미지 교체)
+      imgObj.src = images[index];
+      // div 객체의 텍스트 내용을 변경 (숫자 교체)
+      countObj.textContent = `${index + 1} / ${images.length}`;
+    }
+
+    // 5. 버튼 이벤트 연결
+    document.getElementById('next-btn').onclick = () => {
+      index = (index + 1) % images.length; // 0->1->2->3->4->0 순환
+      updateSlider();
+    };
+
+    document.getElementById('prev-btn').onclick = () => {
+      index = (index - 1 + images.length) % images.length; // 역순 순환
+      updateSlider();
+    };
+  </script>
+
+</body>
+</html>

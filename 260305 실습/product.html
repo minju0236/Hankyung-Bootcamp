@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>레이아웃 심화 실습 (1-5)</title>
+  <style>
+    /* [공용 스타일] */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Pretendard', sans-serif; background: #f8f9fa; color: #333; padding: 100px 20px 50px; }
+    h3 { margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid #dee2e6; }
+    section { max-width: 800px; margin: 0 auto 80px; background: white; padding: 30px; border-radius: 12px; shadow: 0 4px 6px rgba(0,0,0,0.05); }
+
+    /* ------------------------------------------------------
+       ① 화면 정중앙 모달 창 (Modal)
+       핵심: absolute + top/left 50% + transform 보정
+    ------------------------------------------------------ */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 9999;
+    }
+    .modal-window {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%); /* 내 몸집의 절반만큼 역방향 이동 */
+      width: 300px; padding: 20px; background: white;
+      border-radius: 10px; text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .close-btn { margin-top: 15px; padding: 5px 15px; cursor: pointer; }
+
+    /* ------------------------------------------------------
+       ② 이미지 위 'Sold Out' 배지
+       핵심: 부모 relative + 자식 absolute + z-index
+    ------------------------------------------------------ */
+    .product-box { 
+      position: relative; /* 배지의 기준점 */
+      width: 200px; height: 200px; background: #e9ecef;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px; font-weight: bold; color: #adb5bd;
+    }
+    .sold-out-badge {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: #fa5252; color: white; padding: 4px 12px;
+      border-radius: 20px; font-size: 12px; z-index: 10;
+    }
+
+    /* ------------------------------------------------------
+       ③ 겹쳐진 카드 덱 (Card Deck) 효과
+       핵심: z-index 계층 제어 + hover 시 우선순위 변경
+    ------------------------------------------------------ */
+    .card-deck { position: relative; height: 220px; }
+    .card {
+      position: absolute; width: 140px; height: 180px;
+      border-radius: 10px; border: 3px solid white;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: bold; transition: 0.3s;
+    }
+    .card-1 { background: #4dabf7; left: 0; z-index: 1; }
+    .card-2 { background: #51cf66; left: 40px; top: 20px; z-index: 2; }
+    .card-3 { background: #fcc419; left: 80px; top: 40px; z-index: 3; }
+    /* hover 시 해당 카드가 가장 위로(z-index) 올라옴 */
+    .card:hover { z-index: 100; transform: translateY(-15px); cursor: pointer; }
+
+    /* ------------------------------------------------------
+       ④ 반응형 기사형 레이아웃 (Float 활용)
+       핵심: float으로 텍스트 감싸기 + clear로 흐름 해제
+    ------------------------------------------------------ */
+    .article-container { line-height: 1.7; color: #495057; }
+    .float-image {
+      float: left; /* 이미지 주변으로 텍스트가 흐름 */
+      width: 150px; height: 120px; background: #339af0;
+      margin-right: 20px; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: center; color: white;
+    }
+    .clear-fix { clear: both; } /* float의 영향력이 다음 요소에 미치지 않도록 차단 */
+
+    /* ------------------------------------------------------
+       ⑤ 내비게이션 바 알림 숫자 배지
+       핵심: 아이콘 내부 relative + 숫자 absolute 미세 조정
+    ------------------------------------------------------ */
+    .nav-bar {
+      position: fixed; top: 0; left: 0; width: 100%; height: 60px;
+      background: #212529; display: flex; align-items: center; padding: 0 30px;
+      z-index: 1000;
+    }
+    .nav-icon {
+      position: relative; /* 알림 숫자의 기준점 */
+      font-size: 24px; color: white; cursor: pointer;
+    }
+    .notification {
+      position: absolute;
+      top: -5px; right: -8px; /* 아이콘 우측 상단에 걸치도록 조정 */
+      background: #f03e3e; color: white; font-size: 10px;
+      padding: 2px 5px; border-radius: 10px; font-weight: bold;
+      border: 2px solid #212529; /* 배경색과 동일한 테두리로 구분감 생성 */
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-bar">
+    <div class="nav-icon">
+      🔔
+      <span class="notification">9+</span>
+    </div>
+  </nav>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal-window">
+      <h3>① 중앙 모달</h3>
+      <p>transform: translate(-50%, -50%)로<br>완벽한 정중앙에 위치합니다.</p>
+      <button class="close-btn" onclick="document.getElementById('modal').style.display='none'">닫기</button>
+    </div>
+  </div>
+
+  <section>
+    <h3>② 상품 배지 겹치기</h3>
+    <div class="product-box">
+      상품 이미지
+      <span class="sold-out-badge">Sold Out</span>
+    </div>
+  </section>
+
+  <section>
+    <h3>③ 카드 덱 z-index 제어</h3>
+    <div class="card-deck">
+      <div class="card card-1">1</div>
+      <div class="card card-2">2</div>
+      <div class="card card-3">3</div>
+    </div>
+    <p style="font-size: 13px; color: #868e96; margin-top: 10px;">* 카드 위에 마우스를 올려보세요.</p>
+  </section>
+
+  <section>
+    <h3>④ Float 텍스트 감싸기</h3>
+    <div class="article-container">
+      <div class="float-image">기사 이미지</div>
+      <p>
+        이 텍스트는 float 속성이 적용된 이미지 옆에서 흐르기 시작합니다. 
+        이미지의 높이가 끝나면 텍스트는 다시 왼쪽 끝으로 돌아와 전체 너비를 채우게 됩니다. 
+        이것은 flex나 grid로는 구현할 수 없는 float 고유의 텍스트 흐름 제어 기능입니다.
+      </p>
+      <div class="clear-fix"></div> </div>
+  </section>
+
+</body>
+</html>

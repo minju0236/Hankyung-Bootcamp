@@ -1,0 +1,84 @@
+<!-- index.html (Home) -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>토스뱅크 | Home</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #f5f5f5; display: flex; flex-direction: column; min-height: 100vh; gap: 15px; }
+    .container { display: flex; justify-content: space-between; align-items: center; padding: 0 40px; background-color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.05); width: 100%; max-width: 1400px; margin: 0 auto; }
+    .header-container { height: 80px; }
+    .logo img { height: 30px; width: auto; display: block; }
+    .nav-menu { display: flex; gap: 30px; list-style: none; }
+    .nav-menu li a { text-decoration: none; color: #333; font-weight: 500; }
+    .nav-menu li a:hover { color: #3498db; }
+
+    .main-container { flex-grow: 1; align-items: stretch; gap: 20px; padding-top: 20px; padding-bottom: 20px; }
+    .main, .aside { flex: 2; border: 1px solid #eee; border-radius: 12px; padding: 20px; background-color: #fff; }
+    .aside { flex: 1; }
+
+    .footer-container { height: auto; padding: 40px; gap: 40px; align-items: flex-start; }
+    .address, .as_center { line-height: 1.6; font-size: 14px; color: #666; }
+    .address strong, .as_center strong { display: inline-block; margin-bottom: 8px; color: #333; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <header class="header-container container">
+    <div class="logo">
+      <a href="/"><img src="logo.png" alt="서비스 로고"></a>
+    </div>
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">토스뱅크 소개</a></li>
+        <li><a href="/products">상품</a></li>
+        <li><a href="/loan">대출</a></li>
+        <li><a href="/support">고객센터</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-container container">
+    <article class="main">
+      <h3>Home</h3>
+      <p>토스뱅크 메인 페이지입니다. 공지/이벤트/핵심 서비스를 요약해서 보여주는 영역을 구성합니다.</p>
+      <br />
+      <ul>
+        <li>오늘의 공지사항</li>
+        <li>진행 중인 이벤트</li>
+        <li>자주 찾는 서비스 바로가기</li>
+      </ul>
+    </article>
+
+    <aside class="aside">
+      <h3>빠른 안내</h3>
+      <p>고객센터/자주 묻는 질문/보안 안내 등을 배치하는 영역입니다.</p>
+      <br />
+      <ul>
+        <li>자주 묻는 질문</li>
+        <li>분실/도난 신고</li>
+        <li>보안/피싱 주의</li>
+      </ul>
+    </aside>
+  </main>
+
+  <footer class="footer-container container">
+    <div class="address">
+      <p><strong>토스뱅크</strong><br />
+        사업자 등록번호 : 462-86-01671<br />
+        주소 : 06133 서울특별시 강남구 테헤란로 131, 13층<br />
+        대표 : 이은미
+      </p>
+    </div>
+
+    <div class="as_center">
+      <p><strong>고객센터</strong><br />
+        전화 : 1661-7654 (24시간 연중무휴)<br />
+        해외전화 : +82-2-6975-9000<br />
+        이메일 : help@tossbank.com
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

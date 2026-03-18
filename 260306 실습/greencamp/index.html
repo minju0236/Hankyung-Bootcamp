@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+        }
+
+        /* 1. 상단 고정 (Fixed) */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            /* 다른 요소보다 항상 위에 */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            /* 헤더 높이에 맞춰 적절히 조절 */
+            width: auto;
+            /* 가로 세로 비율 유지 */
+            display: block;
+        }
+
+        /* 2. 레이아웃 기반 (Float) */
+        .content-wrapper {
+            margin-top: 100px;
+            /* Fixed 헤더 공간 */
+            padding: 0 5%;
+        }
+
+        .toc-sidebar {
+            float: left;
+            width: 20%;
+        }
+
+        .main-content {
+            float: right;
+            width: 75%;
+        }
+
+        /* 3. 부모 내 고정 (Sticky) */
+        .toc {
+            position: sticky;
+            top: 100px;
+            /* 스크롤하다 100px 지점에서 멈춤 */
+            padding: 20px;
+            background: #f9f9f9;
+        }
+
+        /* 4. 요소 겹치기 (Relative & Absolute) */
+        .product-img-box {
+            position: relative;
+            /* 배지의 기준점 */
+            display: inline-block;
+        }
+
+        .product-img-box img {
+
+        }
+
+        .promo-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #e74c3c;
+            color: white;
+            padding: 8px 15px;
+            font-weight: bold;
+            transform: rotate(5deg);
+            /* 실전 디테일: 살짝 기울여 시선 집중 */
+            z-index: 10;
+        }
+
+        /* 5. 텍스트 감싸기 (Float 특화) */
+        .expert-photo {
+            float: left;
+            width: 200px;
+            margin: 0 25px 20px 0;
+            border-radius: 50%;
+        }
+
+        /* 6. 흐름 복구 (Clearfix) */
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <header class="main-nav">
+            <div class="logo">
+                <img src="logo.png" alt="GreenCamp 로고">
+            </div>
+            <nav>
+                <a href="#">제품보기</a>
+                <a href="#">스토리</a>
+                <a href="#">예약하기</a>
+            </nav>
+        </header>
+
+        <main class="content-wrapper clearfix">
+            <aside class="toc-sidebar">
+                <nav class="toc">
+                    <h4>상세 메뉴</h4>
+                    <ul>
+                        <li><a href="#intro">제품소개</a></li>
+                        <li><a href="#spec">상세스펙</a></li>
+                        <li><a href="#review">리뷰</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <section class="main-content">
+                <article id="intro" class="hero-section">
+                    <div class="product-img-box">
+                        <img src="camping-tent.png" alt="캠핑 텐트">
+                        <span class="promo-badge">LAST 3 ITEMS!</span>
+                    </div>
+                    <h2>올여름, 자연과 하나되는 경험</h2>
+                </article>
+
+                <article class="interview-section">
+                    <h3>전문가 인터뷰</h3>
+                    <img src="expert.png" class="expert-photo" alt="전문가">
+                    <p>
+                        "GreenCamp의 텐트는 단순한 장비를 넘어선 예술입니다.
+                        이 텐트가 특별한 이유는..." (이하 텍스트 생략)
+                    </p>
+                </article>
+            </section>
+        </main>
+
+        <footer class="footer">
+            &copy; 2026 GreenCamp All rights reserved.
+        </footer>
+    </div>
+</body>
+
+</html>

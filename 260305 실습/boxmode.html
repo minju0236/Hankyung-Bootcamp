@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>박스모델과 플렉스 실습</title>
+    <style>
+        /* CSS 스타일 */
+        .container {
+            background-color: lightgrey;
+            border: 2px solid #333;
+        }
+
+        .sidebar {
+            float: left;
+            /* 왼쪽으로 띄움 */
+            width: 30%;
+            height: 200px;
+            background-color: orange;
+        }
+
+        .main-content {
+            float: left;
+            /* 사이드바 바로 옆으로 붙음 */
+            width: 70%;
+            height: 300px;
+            background-color: lightblue;
+        }
+
+        /* ⭐ 핵심: Modern Clearfix (부모 높이 되찾기) */
+        .clearfix::after {
+            content: "";
+            /* 가상의 요소 생성 */
+            display: block;
+            /* 블록 요소로 변경 */
+            clear: both;
+            /* 왼쪽/오른쪽 float 영향 해제 */
+        }
+
+        .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container clearfix">
+        <aside class="sidebar">사이드바 (Float: Left)</aside>
+        <section class="main-content">메인 콘텐츠 (Float: Left)</section>
+    </div>
+
+    <footer class="footer">푸터 (Clear: Both와 동일한 효과)</footer>
+
+</body>
+
+</html>
