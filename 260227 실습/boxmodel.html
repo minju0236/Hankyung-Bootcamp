@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Semantic Layout (Box Model)</title>
+    <link rel="stylesheet" href="boxmodel.module.css" />
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">
+                <a href="/" aria-label="홈으로 이동">
+                    <img src="./logo.png" alt="부트캠프 로고">
+                </a>
+            </h1>
+        </div>
+    </header>
+
+    <nav class="nav" aria-label="Global Navigation">
+        <div class="container">
+            <ul class="gnb">
+                <li><a href="#">소개</a></li>
+                <li><a href="#">박스모델</a></li>
+                <li><a href="#">마진/패딩</a></li>
+                <li><a href="#">실습</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container layout">
+        <main class="main">
+            <h2>main 영역</h2>
+            <p>이 영역은 <span style="color: #6367FF;">콘텐츠(본문)</span>입니다. padding/border로 박스 모델을 확인합니다.</p>
+        </main>
+
+        <aside class="aside">
+            <h3>aside 영역</h3>
+            <ul>
+                <li style="color: #6367FF;">공지</li>
+                <li>자료</li>
+                <li>링크</li>
+            </ul>
+        </aside>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 Bootcamp</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

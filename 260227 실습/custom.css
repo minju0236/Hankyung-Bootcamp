@@ -1,0 +1,63 @@
+/* [1] 기초 공사 (*): 모든 요소의 기본 여백을 지웁니다. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 테두리를 포함해 크기를 계산함 */
+}
+
+/* [2] 도화지 설정 (body): 전체 배경색과 중앙 배치를 담당합니다. */
+body {
+    background-color: #ffffff; /* 전체 배경색 */
+    font-family: sans-serif;
+    
+    /* 박스를 화면 정중앙에 딱 배치하는 마법 */
+    display: flex;
+    justify-content: center;   /* 가로 중앙 */
+    align-items: center;       /* 세로 중앙 */
+    min-height: 100vh;         /* 화면 높이를 가득 채움 */
+}
+
+/* [3] 요소 설정 (.my-box): 실제 눈에 보이는 흰색 네모를 꾸밉니다. */
+.my-box {
+    width: 320px;
+    padding: 40px 20px;        /* 안쪽 여백 */
+    border-radius: 5px;       /* 모서리 둥글게 */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* 입체감 주는 그림자 */
+    text-align: center;        /* 안쪽 글자 중앙 정렬 */
+    margin: 10px;
+}
+
+#member1 {
+    background-color: pink;
+}
+#member2 {
+    background-color: rgb(255, 254, 192);
+}
+#member3 {
+    background-color: rgb(192, 225, 255);
+}
+#member4{
+    background-color: rgb(199, 255, 192);
+}
+
+/* 박스 내부의 구체적인 디자인 */
+.my-box h2 {
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.my-box p {
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.btn {
+    background-color: #b93535;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>실무형 GNB 제작 실습</title>
+  <link rel="stylesheet" href="./gnb.css" />
+</head>
+<body>
+
+  <nav class="gnb-wrapper" aria-label="Global Navigation Bar">
+    <div class="gnb-inner">
+      <h1 class="logo">
+        <a href="#" aria-label="홈으로 이동">부트캠프</a>
+      </h1>
+
+      <ul class="menu-list">
+        <li class="menu-item"><a class="menu-link" href="#">소개</a></li>
+
+        <li class="menu-item has-submenu">
+          <a class="menu-link" href="#">박스 모델</a>
+          <ul class="submenu">
+            <li><a href="#">콘텐츠 영역</a></li>
+            <li><a href="#">패딩과 마진</a></li>
+            <li><a href="#">테두리 설정</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item"><a class="menu-link" href="#">마진/패딩</a></li>
+        <li class="menu-item"><a class="menu-link" href="#">실습 가이드</a></li>
+        <li class="menu-item"><a class="menu-link" href="#">커뮤니티</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="content">
+    <h2>GNB 박스 모델 분석</h2>
+    <p class="desc">좌측 사이드바 메뉴에 마우스를 올려보세요.</p>
+    <p class="desc">서브메뉴는 옆으로 펼쳐지며, 클릭 영역은 padding으로 확장되어 있습니다.</p>
+  </main>
+
+</body>
+</html>

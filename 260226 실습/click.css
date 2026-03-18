@@ -1,0 +1,61 @@
+/* 박스 모델 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 50px;
+    background-color: #f0f0f0;
+}
+
+/* 1. 패딩과 클릭 영역 */
+.button {
+    display: inline-block;
+    background-color: #db3434;
+    color: white;
+    text-decoration: none;
+    /* 패딩을 통해 글자 주변의 클릭 가능 영역을 확장 */
+    padding: 20px 30px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+/* 2. 단축 속성(Shorthand) 실습 */
+.box {
+    background-color: white;
+    border: 2px solid #333;
+    width: 300px;
+    font-size: 14px;
+}
+
+/* 값 1개: 상하좌우 30px 동일 */
+.box-1 {
+    padding: 30px;
+    margin: 20px;
+}
+
+/* 값 2개: 상하 10px, 좌우 50px */
+.box-2 {
+    padding: 50px 50px;
+    margin: 20px 0;
+}
+
+/* 값 4개: 상(0), 우(50px), 하(20px), 좌(10px) - 시계 방향 */
+.box-4 {
+    padding: 0 50px 20px 10px;
+    margin: 20px 0;
+}
+
+/* 3. 음수 마진과 중앙 정렬 */
+.negative-margin {
+    background-color: #000;
+    color: white;
+    /* 마진 0 auto는 블록 요소를 중앙으로 보냄 */
+    margin: 0 auto; 
+    /* 음수 마진을 사용하여 위쪽 요소와 겹치게 설정 */
+    /* margin-top: -30px; */
+    padding: 20px;
+}

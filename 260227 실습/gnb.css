@@ -1,0 +1,164 @@
+/* 기본 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+    color: #222;
+}
+
+/* 사이드바 폭 */
+:root {
+    --sidebar-w: 240px;
+}
+
+/* 사이드바 GNB (좌측 고정) */
+.gnb-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+
+    background-color: #F5EFE6;
+    border-right: 1px solid #eeeeee;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 내부 레이아웃: 세로 정렬 */
+.gnb-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 18px 14px;
+    gap: 14px;
+}
+
+/* 로고 */
+.logo a {
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 800;
+    color: #333;
+    display: inline-block;
+    padding: 10px 8px;
+    border-radius: 10px;
+}
+
+/* 메뉴 리스트: 세로 */
+.menu-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* 각 메뉴 항목 기준점(서브메뉴 absolute 기준) */
+.menu-list li {
+    position: relative;
+    background-color: #E8DFCA;
+    border-radius: 10px;
+}
+
+/* 메뉴 링크 */
+.menu-link {
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+    display: block;
+    padding: 12px 12px;
+    border-radius: 10px;
+
+    transition: color 0.2s, background-color 0.2s;
+}
+
+.menu-link:hover {
+    color: #ffffff;
+    background-color: #6D94C5;
+}
+
+/* 서브메뉴: 사이드바 오른쪽으로 펼쳐지는 플라이아웃 */
+.submenu {
+    display: none;
+    position: absolute;
+
+    /* 오른쪽으로 펼치기 */
+    left: calc(100% + 10px);
+    top: 0;
+
+    min-width: 180px;
+    padding: 10px 0;
+    background-color: #fff !important;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    list-style: none;
+
+    z-index: 9999;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    transform: translateX(-6px);
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+/* hover/focus 시 표시 */
+.menu-list li:hover .submenu,
+.menu-list li:focus-within .submenu {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+/* 서브메뉴 링크 */
+.submenu a {
+    display: block;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.2;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.submenu li:not(:last-child) a {
+    border-bottom: 1px solid #eee;
+}
+
+.submenu a:hover {
+    background-color: #f6f7f8;
+}
+
+/* 키보드 포커스 */
+.submenu a:focus {
+    outline: 2px solid #3498db;
+    outline-offset: -2px;
+    background-color: #f0f7ff;
+}
+
+/* 드롭다운 표시 화살표 (submenu 보유 항목만) */
+.menu-list li.has-submenu>a::after {
+    content: "▸";
+    float: right;
+    color: #888;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+/* 본문: 사이드바만큼 밀기 */
+.content {
+    margin-left: var(--sidebar-w);
+    padding: 40px;
+    background-color: #CBDCEB;
+}
+
+.desc {
+    margin-top: 12px;
+    line-height: 1.6;
+    color: #444;
+    background-color: #6D94C5;
+}

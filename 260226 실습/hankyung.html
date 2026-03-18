@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>한국경제신문사 구조</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  main {
+    width: 1020px;
+    height: 1080px;
+    padding: 10px;
+    background-color: violet;
+    border: 5px solid indigo;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 상단 첫번째 div */
+  .header-box {
+    flex: 0 0 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: green;
+    border: 5px solid darkgreen;
+  }
+
+  .header-box h3 {
+    margin: 0;
+    color: black;
+    text-align: center;
+  }
+
+  /* 두번째 div */
+  .notice-box {
+    margin-top: 10px;
+    flex: 0 0 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 50px;
+    background-color: #fff44f; /* 개나리색 */
+    border: 5px solid #c9b800;
+    color: black;
+  }
+
+  /* footer */
+  footer {
+    margin-top: auto;
+    flex: 0 0 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: brown;
+    border: 5px solid #5a2d0c;
+    color: black;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+
+<main>
+
+  <div class="header-box">
+    <h3>한국경제신문사</h3>
+  </div>
+
+  <div class="notice-box">
+    한경 부트캠프 행사안내 수료조건
+  </div>
+
+  <footer>
+    Copyright 2026
+  </footer>
+
+</main>
+
+</body>
+</html>

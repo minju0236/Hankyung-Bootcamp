@@ -1,0 +1,137 @@
+/* reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Noto Sans KR", Arial, sans-serif;
+    color: #222;
+}
+
+/* 공통: 중앙 정렬 컨테이너 (박스 모델: width + margin) */
+.container {
+    width: 1000px;
+    margin: 0 auto;
+    /* 중앙 정렬 */
+    padding: 0 16px;
+    /* 좌우 안쪽 여백 */
+}
+
+/* header / nav / footer: 배경은 100% (바깥 박스) */
+.header,
+.nav,
+.footer {
+    width: 100%;
+    border-bottom: 1px solid #6367FF;
+}
+
+/* header */
+.header {
+    padding: 18px 0;
+    background: #e7e4e45a;
+}
+
+/* padding으로 높이(박스) 결정 */
+.logo {
+    font-size: 22px;
+}
+
+.logo img {
+    height: 40px;
+    /* 원하는 크기 지정 */
+    width: auto;
+    /* 비율 유지 */
+    display: block;
+    /* 아래 여백 제거 */
+}
+
+.logo a {
+    display: inline-block;
+    padding: 6px 0;
+}
+
+/* nav */
+.nav {
+    padding: 10px 0;
+    background-color: #8494FF;
+}
+
+.gnb {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+
+.gnb a {
+    display: block;
+    /* padding 전체 클릭 */
+    padding: 10px 14px;
+    /* 박스 모델: 클릭 영역 확장 */
+    text-decoration: none;
+    color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 8px;
+}
+
+.gnb a:hover {
+    background: #ffffff59;
+}
+
+/* main + aside 레이아웃 (박스 모델: width + padding + border) */
+.layout {
+    display: flex;
+    gap: 20px;
+    /* 박스 간 간격 */
+    padding: 20px 16px;
+    /* 섹션 상하 여백 */
+    background-color: #e7e4e45a;
+    min-height: 80vh;
+}
+
+/* main */
+.main {
+    flex: 1;
+    /* 남는 공간 차지 */
+    padding: 20px;
+    /* 안쪽 여백 */
+    border: 1px solid #C9BEFF;
+    /* 테두리 */
+    border-radius: 10px;
+    background: #c9beff9a;
+    height: 500px;
+    min-height: 500px;
+}
+
+/* aside */
+.aside {
+    width: 260px;
+    /* 고정 폭(박스) */
+    padding: 20px;
+    border: 1px solid #ffdbfd;
+    border-radius: 10px;
+    background: #ffdbfda0;
+    height: 400px;
+    height: 500px;
+    min-height: 500px;
+}
+
+.aside ul {
+    margin-top: 10px;
+    padding-left: 18px;
+}
+
+/* footer */
+.footer {
+    border-top: 1px solid #eee;
+    background: #6367FF;
+    border-bottom: 0;
+    margin-top: 20px;
+    padding: 14px 0;
+    color: #6367FF;
+}
+
+.footer p {
+    background: #fff;
+}

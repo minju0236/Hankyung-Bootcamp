@@ -1,0 +1,58 @@
+/* 5순위: 요소 선택자 (1점) */
+h1 {
+    color: gray;
+}
+
+/* 4순위: 클래스 선택자 (10점) */
+.heading {
+    color: green;
+}
+
+/* 3순위: ID 선택자 (100점) */
+#title {
+    color: orange;
+}
+
+/* 2순위: 인라인 스타일 (1000점) 
+   -> HTML 태그 안에 작성된 style="color: blue;"가 적용됨 */
+
+/* 1순위: !important (무적) 
+   -> 아래 주석을 해제하면 모든 것을 무시하고 빨간색이 됩니다. */
+/*
+h1 {
+    color: red !important;
+}
+*/
+
+/* ------------------------------------------ */
+
+/* 코드 순서(Source Order) 테스트 */
+/* 두 선택자의 점수가 10점으로 같을 때 */
+
+.description {
+    color: black;
+}
+
+.description {
+    color: purple; /* 더 아래에 있으므로 보라색이 최종 적용됨 */
+}
+
+/* ------------------------------------------ */
+
+/* 복합 선택자 점수 계산 실습 */
+
+/* 요소(1) + 요소(1) = 2점 */
+div button {
+    background-color: lightgray;
+}
+
+/* 클래스(10) + 요소(1) = 11점 (우승) */
+.wrapper button {
+    background-color: yellow;
+}
+
+/* 클래스(10) + 가상클래스(10) = 20점 (최종 우승) */
+.btn.active {
+    background-color: lightgreen;
+    border: 2px solid green;
+}
