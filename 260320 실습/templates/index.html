@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>충정일보</title>
+    <link rel="stylesheet" href="../static/style.css" />
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header class="header">
+            <div class="logo"><img src="../static/images/logo.png"></div>
+            <nav class="nav">
+                <a href="#">정치</a>
+                <a href="#">경제</a>
+                <a href="#">사회</a>
+                <a href="#">문화</a>
+                <a href="#">스포츠</a>
+            </nav>
+        </header>
+
+        <main class="grid">
+
+            <section class="headline">
+                <img src="https://picsum.photos/800/400" />
+                <div class="headline-text">
+                    <span class="category">[ 정치 ]</span>
+                    <h1>최신 뉴스 헤드라인 기사가 여기에 들어갑니다</h1>
+                    <p>여기에 요약 내용이 들어갑니다.</p>
+                </div>
+            </section>
+
+            <aside class="write">
+                <h2>기사 작성</h2>
+
+                <input type="text" placeholder="제목" />
+                <select>
+                    <option>정치</option>
+                    <option>경제</option>
+                </select>
+                <textarea placeholder="본문"></textarea>
+                <input type="text" placeholder="작성자" />
+
+                <button>등록하기</button>
+            </aside>
+
+            <section class="articles"></section>
+
+            <aside class="sidebar">
+                <h2>인기 뉴스</h2>
+                <ul></ul>
+            </aside>
+
+        </main>
+
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            alert('로그인 필요');
+            location.href = '/';
+        }
+
+        async function fetchNews() {
+            const res = await fetch('/news', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            if (res.status === 401) {
+                alert('로그인 만료');
+                localStorage.removeItem('token');
+                location.href = '/';
+                return;
+            }
+
+            const data = await res.json();
+
+            const articlesEl = document.querySelector('.articles');
+            const headlineTitle = document.querySelector('.headline h1');
+            const headlineCategory = document.querySelector('.headline .category');
+            const headlineDesc = document.querySelector('.headline p');
+            const popularEl = document.querySelector('.sidebar ul');
+
+            articlesEl.innerHTML = '';
+            popularEl.innerHTML = '';
+
+            if (data.length > 0) {
+                const headline = data[0];
+                headlineTitle.innerText = headline.title;
+                headlineCategory.innerText = `[ ${headline.category} ]`;
+                headlineDesc.innerText = `${headline.content} - ${headline.author} 기자`;
+            }
+
+            data.slice(1).forEach(news => {
+                const div = document.createElement('div');
+                div.className = 'card';
+
+                div.innerHTML = `
+                    <img src="https://picsum.photos/120/80" />
+                    <div>
+                        <h3>${news.title}</h3>
+                        <p>${news.content}</p>
+                        <p style="font-size:14px;">${news.author} 기자</p>
+                    </div>
+                `;
+
+                articlesEl.appendChild(div);
+            });
+
+            data.slice(0, 3).forEach((news, idx) => {
+                const li = document.createElement('li');
+                li.innerText = `${idx + 1}. ${news.title}`;
+                popularEl.appendChild(li);
+            });
+        }
+
+        async function createNews() {
+            const inputs = document.querySelectorAll('.write input');
+            const title = inputs[0].value;
+            const author = inputs[1].value;
+            const category = document.querySelector('.write select').value;
+            const content = document.querySelector('.write textarea').value;
+
+            const res = await fetch('/news', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ title, category, content, author })
+            });
+
+            if (res.status === 401) {
+                alert('로그인 만료');
+                localStorage.removeItem('token');
+                location.href = '/';
+                return;
+            }
+
+            const result = await res.json();
+            alert(result.message);
+
+            fetchNews();
+        }
+
+        document.querySelector('.write button').addEventListener('click', createNews);
+
+        fetchNews();
+    </script>
+
+</body>
+
+</html>
