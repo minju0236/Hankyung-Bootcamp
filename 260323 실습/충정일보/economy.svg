@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#eef2f7"/>
+  <line x1="140" y1="560" x2="1080" y2="560" stroke="#495057" stroke-width="6"/>
+  <rect x="220" y="420" width="120" height="140" fill="#adb5bd"/>
+  <rect x="400" y="360" width="120" height="200" fill="#868e96"/>
+  <rect x="580" y="290" width="120" height="270" fill="#6c757d"/>
+  <rect x="760" y="220" width="120" height="340" fill="#495057"/>
+  <text x="600" y="120" text-anchor="middle" font-size="56" font-family="Malgun Gothic, sans-serif" fill="#343a40" font-weight="700">경제</text>
+</svg>

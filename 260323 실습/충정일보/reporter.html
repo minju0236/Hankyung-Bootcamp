@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정일보 - 기자 송고</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="topbar">
+        <div class="brand">충정일보</div>
+        <div>
+            <span id="welcome"></span>
+            <button class="top-btn" onclick="logout()">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="two-column">
+            <div class="panel">
+                <div class="panel-title">취재 기사 송고 / 수정</div>
+
+                <input class="input" type="hidden" id="editId">
+
+                <input class="input" type="text" id="title" placeholder="기사 제목">
+                <select class="select" id="category">
+                    <option value="정치">정치</option>
+                    <option value="경제">경제</option>
+                    <option value="사회">사회</option>
+                </select>
+                <input class="input" type="text" id="articleDate" placeholder="기사 작성일 예: 2026.03.20">
+                <input class="input" type="file" id="photo" accept="image/*">
+                <textarea class="textarea" id="content" placeholder="기사 내용을 입력하세요."></textarea>
+
+                <button class="button" onclick="saveArticle()">기사 저장</button>
+                <button class="button sub" onclick="clearForm()">입력 초기화</button>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">내가 송고한 기사</div>
+
+                <div class="search-row">
+                    <input class="input" type="text" id="searchWord" placeholder="내 기사 검색">
+                    <button class="button" onclick="loadData()">검색</button>
+                </div>
+
+                <div id="myList"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">충정일보</div>
+
+            <div class="footer-info">
+                <div class="footer-info-block">
+                    발행인: 홍길동<br>
+                    편집인: 김충정<br>
+                    주소: 서울특별시 중구 세종대로 100 충정일보 빌딩<br>
+                    대표전화: 02-1234-5678
+                </div>
+
+                <div class="footer-info-block">
+                    사업자등록번호: 123-45-67890<br>
+                    청소년보호책임자: 강감찬<br>
+                    대표 이메일: editor@cjdaily.co.kr<br>
+                    기사제보: press@cjdaily.co.kr
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <span>회사소개</span>
+                <span>이용약관</span>
+                <span>개인정보처리방침</span>
+                <span>광고문의</span>
+                <span>기사제보</span>
+                <span>고객센터</span>
+            </div>
+
+            <div class="footer-copy">
+                Copyright © 충정일보. All rights reserved.<br>
+                본 사이트에 게재된 기사, 사진, 영상, 콘텐츠의 무단 전재 및 재배포를 금합니다.
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script>
+        let articleMap = {};
+
+        async function init() {
+            const token = localStorage.getItem('myToken');
+            if (!token) {
+                location.href = '/';
+                return;
+            }
+
+            const authRes = await fetch('/api/verify', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const authData = await authRes.json();
+
+            if (!authData.success || authData.user.role !== 'reporter') {
+                alert('기자만 접근 가능합니다.');
+                location.href = '/main';
+                return;
+            }
+
+            document.getElementById('welcome').innerText = authData.user.userName + ' 기자님';
+            loadData();
+        }
+
+        async function loadData() {
+            const token = localStorage.getItem('myToken');
+            const search = document.getElementById('searchWord').value.trim();
+
+            const res = await fetch('/api/reporter/my-articles?search=' + encodeURIComponent(search), {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+
+            const myList = document.getElementById('myList');
+            myList.innerHTML = '';
+            articleMap = {};
+
+            if (data.length === 0) {
+                myList.innerHTML = '<p>작성한 기사가 없습니다.</p>';
+                return;
+            }
+
+            data.forEach(item => {
+                articleMap[item.id] = item;
+
+                myList.innerHTML += `
+                    <div class="reporter-item">
+                        <div>
+                            <strong>${item.title}</strong>
+                            <span class="status-badge">${item.status}</span>
+                        </div>
+                        <div class="card-meta">${item.article_date} | ${item.category} | 취재기자 ${item.reporter_name}</div>
+                        <img class="reporter-thumb" src="${item.photo_path || '/static/images/default-photo.svg'}">
+                        <div class="reporter-edit-box">
+                            <button class="action-btn" onclick="setEditForm(${item.id})">수정</button>
+                            <button class="action-btn delete" onclick="deleteArticle(${item.id})">삭제</button>
+                            <button class="action-btn" onclick="viewArticle(${item.id})">보기</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        async function saveArticle() {
+            const token = localStorage.getItem('myToken');
+            const editId = document.getElementById('editId').value;
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('title').value);
+            formData.append('category', document.getElementById('category').value);
+            formData.append('content', document.getElementById('content').value);
+            formData.append('articleDate', document.getElementById('articleDate').value);
+
+            const file = document.getElementById('photo').files[0];
+            if (file) {
+                formData.append('photo', file);
+            }
+
+            let url = '/api/reporter/article';
+            let method = 'POST';
+
+            if (editId) {
+                url = '/api/reporter/article/' + editId;
+                method = 'PUT';
+            }
+
+            const res = await fetch(url, {
+                method,
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                alert(editId ? '기사 수정 완료' : '기사 송고 완료');
+                clearForm();
+                loadData();
+            } else {
+                alert(data.message || '저장 실패');
+            }
+        }
+
+        function setEditForm(id) {
+            const item = articleMap[id];
+            if (!item) return;
+
+            document.getElementById('editId').value = item.id;
+            document.getElementById('title').value = item.title;
+            document.getElementById('category').value = item.category;
+            document.getElementById('articleDate').value = item.article_date;
+            document.getElementById('content').value = item.content || '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function deleteArticle(id) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+
+            const token = localStorage.getItem('myToken');
+            const res = await fetch('/api/reporter/article/' + id, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                alert('삭제 완료');
+                clearForm();
+                loadData();
+            } else {
+                alert('삭제 실패');
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('editId').value = '';
+            document.getElementById('title').value = '';
+            document.getElementById('category').value = '정치';
+            document.getElementById('content').value = '';
+            document.getElementById('articleDate').value = '';
+            document.getElementById('photo').value = '';
+        }
+
+        function viewArticle(id) {
+            location.href = '/article?id=' + id;
+        }
+
+        function logout() {
+            localStorage.removeItem('myToken');
+            location.href = '/';
+        }
+
+        init();
+    </script>
+</body>
+</html>

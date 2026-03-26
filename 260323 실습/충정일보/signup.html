@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정일보 회원가입</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="page-center">
+        <div class="auth-card">
+            <div class="auth-logo">충정일보</div>
+            <div class="auth-sub">회원가입</div>
+
+            <input class="input" type="text" id="uId" placeholder="아이디">
+            <input class="input" type="password" id="uPw" placeholder="비밀번호">
+            <input class="input" type="text" id="uName" placeholder="이름">
+
+            <select class="select" id="uRole">
+                <option value="subscriber">구독자</option>
+                <option value="reporter">기자</option>
+                <option value="admin">관리자</option>
+            </select>
+
+            <button class="button" onclick="save()">가입하기</button>
+
+            <div class="link-box">
+                <a href="/">로그인으로 이동</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function save() {
+            const res = await fetch('/api/signup', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    userId: uId.value,
+                    password: uPw.value,
+                    userName: uName.value,
+                    role: uRole.value
+                })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                alert('가입 완료');
+                location.href = '/';
+            } else {
+                alert(data.message || '가입 실패');
+            }
+        }
+    </script>
+</body>
+</html>

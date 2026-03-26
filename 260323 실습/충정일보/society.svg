@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#f1f3f5"/>
+  <circle cx="360" cy="300" r="70" fill="#adb5bd"/>
+  <circle cx="600" cy="260" r="70" fill="#868e96"/>
+  <circle cx="840" cy="300" r="70" fill="#adb5bd"/>
+  <rect x="280" y="390" width="160" height="160" rx="24" fill="#ced4da"/>
+  <rect x="520" y="350" width="160" height="200" rx="24" fill="#6c757d"/>
+  <rect x="760" y="390" width="160" height="160" rx="24" fill="#ced4da"/>
+  <text x="600" y="110" text-anchor="middle" font-size="56" font-family="Malgun Gothic, sans-serif" fill="#343a40" font-weight="700">사회</text>
+</svg>

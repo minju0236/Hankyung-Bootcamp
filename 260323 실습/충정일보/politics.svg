@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#e9ecef"/>
+  <rect x="80" y="420" width="1040" height="180" fill="#adb5bd"/>
+  <rect x="160" y="260" width="220" height="160" fill="#ced4da"/>
+  <rect x="420" y="180" width="360" height="240" fill="#dee2e6"/>
+  <rect x="820" y="260" width="220" height="160" fill="#ced4da"/>
+  <text x="600" y="110" text-anchor="middle" font-size="56" font-family="Malgun Gothic, sans-serif" fill="#343a40" font-weight="700">정치</text>
+</svg>

@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정일보 - 구독자 메인</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="portal-topline">
+        <div class="portal-inner">
+            <div id="todayText">2026.03.21</div>
+            <div class="portal-userbox">
+                <span id="welcome"></span>
+                <button class="small-logout-btn" onclick="logout()">로그아웃</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="portal-logo-row">
+        <div class="portal-inner logo-center">
+            <div class="portal-logo">충정일보</div>
+        </div>
+    </div>
+
+    <div class="portal-nav-row">
+        <div class="portal-inner portal-nav">
+            <a href="javascript:void(0)" onclick="setCategoryFilter('')">전체</a>
+            <a href="javascript:void(0)" onclick="setCategoryFilter('정치')">정치</a>
+            <a href="javascript:void(0)" onclick="setCategoryFilter('경제')">경제</a>
+            <a href="javascript:void(0)" onclick="setCategoryFilter('사회')">사회</a>
+        </div>
+    </div>
+
+    <div class="portal-inner">
+        <div class="search-wrap">
+            <input class="portal-search-input" type="text" id="searchWord" placeholder="기사 제목, 내용, 기자명, 카테고리 검색">
+            <button class="portal-search-btn" onclick="loadData()">검색</button>
+        </div>
+
+        <div class="promo-banner">
+            <div class="promo-left">충정일보 디지털 뉴스 플랫폼</div>
+            <div class="promo-right">정치 · 경제 · 사회 주요 뉴스를 빠르게 확인하세요</div>
+        </div>
+
+        <div class="news-main-grid">
+            <div class="left-column">
+                <div id="leftNews"></div>
+            </div>
+
+            <div class="center-column">
+                <div id="headlineMain"></div>
+            </div>
+
+            <div class="right-column">
+                <div class="right-title">주요 속보</div>
+                <div id="headlineSide"></div>
+            </div>
+        </div>
+
+        <div class="section-row">
+            <div class="section-box">
+                <div class="section-header">정치</div>
+                <div id="politicsSection"></div>
+            </div>
+            <div class="section-box">
+                <div class="section-header">경제</div>
+                <div id="economySection"></div>
+            </div>
+            <div class="section-box">
+                <div class="section-header">사회</div>
+                <div id="societySection"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">충정일보</div>
+
+            <div class="footer-info">
+                <div class="footer-info-block">
+                    발행인: 홍길동<br>
+                    편집인: 김충정<br>
+                    주소: 서울특별시 중구 세종대로 100 충정일보 빌딩<br>
+                    대표전화: 02-1234-5678
+                </div>
+
+                <div class="footer-info-block">
+                    사업자등록번호: 123-45-67890<br>
+                    청소년보호책임자: 강감찬<br>
+                    대표 이메일: editor@cjdaily.co.kr<br>
+                    기사제보: press@cjdaily.co.kr
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <span>회사소개</span>
+                <span>이용약관</span>
+                <span>개인정보처리방침</span>
+                <span>광고문의</span>
+                <span>기사제보</span>
+                <span>고객센터</span>
+            </div>
+
+            <div class="footer-copy">
+                Copyright © 충정일보. All rights reserved.<br>
+                본 사이트에 게재된 기사, 사진, 영상, 콘텐츠의 무단 전재 및 재배포를 금합니다.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentCategory = '';
+
+        async function init() {
+            const token = localStorage.getItem('myToken');
+            if (!token) {
+                location.href = '/';
+                return;
+            }
+
+            const authRes = await fetch('/api/verify', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const authData = await authRes.json();
+
+            if (!authData.success || authData.user.role !== 'subscriber') {
+                alert('구독자만 접근 가능합니다.');
+                location.href = '/main';
+                return;
+            }
+
+            document.getElementById('welcome').innerText = authData.user.userName + ' 구독자님';
+            document.getElementById('todayText').innerText = new Date().toLocaleDateString('ko-KR');
+            loadData();
+        }
+
+        function setCategoryFilter(category) {
+            currentCategory = category;
+            loadData();
+        }
+
+        async function loadData() {
+            const search = document.getElementById('searchWord').value.trim();
+            const res = await fetch('/api/data?search=' + encodeURIComponent(search));
+            let data = await res.json();
+
+            if (currentCategory) {
+                data = data.filter(item => item.category === currentCategory);
+            }
+
+            const leftNews = document.getElementById('leftNews');
+            const headlineMain = document.getElementById('headlineMain');
+            const headlineSide = document.getElementById('headlineSide');
+            const politicsSection = document.getElementById('politicsSection');
+            const economySection = document.getElementById('economySection');
+            const societySection = document.getElementById('societySection');
+
+            leftNews.innerHTML = '';
+            headlineMain.innerHTML = '';
+            headlineSide.innerHTML = '';
+            politicsSection.innerHTML = '';
+            economySection.innerHTML = '';
+            societySection.innerHTML = '';
+
+            if (data.length === 0) {
+                headlineMain.innerHTML = '<div class="empty-text">검색 결과가 없습니다.</div>';
+                return;
+            }
+
+            const headline = data[0];
+            const leftItems = data.slice(1, 5);
+            const rightItems = data.slice(5, 9);
+
+            leftItems.forEach(item => {
+                leftNews.innerHTML += `
+                    <div class="left-news-item" onclick="viewArticle(${item.id})">
+                        ${item.photo_path ? `<img class="left-thumb" src="${item.photo_path}">` : ''}
+                        <div class="left-news-title">${item.title}</div>
+                        <div class="left-news-meta">${item.article_date} | ${item.category}</div>
+                    </div>
+                `;
+            });
+
+            headlineMain.innerHTML = `
+                <div class="headline-card" onclick="viewArticle(${headline.id})">
+                    <img class="headline-image" src="${headline.photo_path || '/static/images/default-photo.svg'}">
+                    <div class="headline-title">${headline.title}</div>
+                    <div class="headline-meta">${headline.article_date} | ${headline.category} | 취재기자 ${headline.reporter_name}</div>
+                    <div class="headline-summary">${headline.content.substring(0, 160)}...</div>
+                </div>
+            `;
+
+            rightItems.forEach(item => {
+                headlineSide.innerHTML += `
+                    <div class="breaking-item" onclick="viewArticle(${item.id})">
+                        ${item.photo_path ? `<img class="breaking-thumb" src="${item.photo_path}">` : ''}
+                        <div class="breaking-text">
+                            <div class="breaking-title">${item.title}</div>
+                            <div class="breaking-meta">${item.article_date} | ${item.category}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            renderSection(data.filter(item => item.category === '정치'), politicsSection);
+            renderSection(data.filter(item => item.category === '경제'), economySection);
+            renderSection(data.filter(item => item.category === '사회'), societySection);
+        }
+
+        function renderSection(items, target) {
+            if (items.length === 0) {
+                target.innerHTML = '<div class="empty-text">기사가 없습니다.</div>';
+                return;
+            }
+
+            items.slice(0, 4).forEach((item, index) => {
+                if (index === 0) {
+                    target.innerHTML += `
+                        <div class="section-main-item" onclick="viewArticle(${item.id})">
+                            <img class="section-main-thumb" src="${item.photo_path || '/static/images/default-photo.svg'}">
+                            <div class="section-main-title">${item.title}</div>
+                            <div class="section-main-meta">${item.article_date} | 취재기자 ${item.reporter_name}</div>
+                        </div>
+                    `;
+                } else {
+                    target.innerHTML += `
+                        <div class="section-sub-item" onclick="viewArticle(${item.id})">
+                            <div class="section-sub-title">${item.title}</div>
+                            <div class="section-sub-meta">${item.article_date} | 취재기자 ${item.reporter_name}</div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function viewArticle(id) {
+            location.href = '/article?id=' + id;
+        }
+
+        function logout() {
+            localStorage.removeItem('myToken');
+            location.href = '/';
+        }
+
+        init();
+    </script>
+</body>
+</html>

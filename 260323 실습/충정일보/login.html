@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정일보 로그인</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="page-center">
+        <div class="auth-card">
+            <div class="auth-logo">충정일보</div>
+            <div class="auth-sub">만들어야 산다 - 한경부트캠프</div>
+
+            <input class="input" type="text" id="uId" placeholder="아이디">
+            <input class="input" type="password" id="uPw" placeholder="비밀번호">
+
+            <button class="button" onclick="login()">로그인</button>
+            <button class="button sub" onclick="location.href='/signup'">회원가입</button>
+        </div>
+    </div>
+
+    <script>
+        async function login() {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ userId: uId.value, password: uPw.value })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                localStorage.setItem('myToken', data.token);
+                location.href = '/main';
+            } else {
+                alert(data.message || '로그인 실패');
+            }
+        }
+    </script>
+</body>
+</html>

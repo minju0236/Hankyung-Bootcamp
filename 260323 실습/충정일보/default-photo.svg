@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#ece7dc"/>
+  <rect x="150" y="120" width="900" height="460" fill="#fffdf8" stroke="#b8ad9e" stroke-width="4"/>
+  <circle cx="430" cy="300" r="70" fill="#d6cec1"/>
+  <path d="M250 500 L470 340 L620 460 L760 360 L950 500 Z" fill="#cfc7ba"/>
+  <text x="600" y="620" text-anchor="middle" font-size="42" font-family="Malgun Gothic, sans-serif" fill="#6b6257">기사 사진</text>
+</svg>

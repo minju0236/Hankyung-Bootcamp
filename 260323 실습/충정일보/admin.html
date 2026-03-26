@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정일보 - 관리자</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="topbar">
+        <div class="brand">충정일보</div>
+        <div>
+            <span id="welcome"></span>
+            <button class="top-btn" onclick="logout()">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel">
+            <div class="panel-title">사용자 관리</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>이름</th>
+                        <th>역할</th>
+                        <th>아이디 수정</th>
+                        <th>비밀번호 수정</th>
+                        <th>관리 기능</th>
+                    </tr>
+                </thead>
+                <tbody id="userList"></tbody>
+            </table>
+        </div>
+
+        <div class="panel" style="margin-top:24px;">
+            <div class="panel-title">기사 승인 관리</div>
+
+            <div class="search-row">
+                <input class="input" type="text" id="searchWord" placeholder="기사 검색">
+                <button class="button" onclick="loadData()">검색</button>
+            </div>
+
+            <div id="articleList"></div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">충정일보</div>
+
+            <div class="footer-info">
+                <div class="footer-info-block">
+                    발행인: 홍길동<br>
+                    편집인: 김충정<br>
+                    주소: 서울특별시 중구 세종대로 100 충정일보 빌딩<br>
+                    대표전화: 02-1234-5678
+                </div>
+
+                <div class="footer-info-block">
+                    사업자등록번호: 123-45-67890<br>
+                    청소년보호책임자: 강감찬<br>
+                    대표 이메일: editor@cjdaily.co.kr<br>
+                    기사제보: press@cjdaily.co.kr
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <span>회사소개</span>
+                <span>이용약관</span>
+                <span>개인정보처리방침</span>
+                <span>광고문의</span>
+                <span>기사제보</span>
+                <span>고객센터</span>
+            </div>
+
+            <div class="footer-copy">
+                Copyright © 충정일보. All rights reserved.<br>
+                본 사이트에 게재된 기사, 사진, 영상, 콘텐츠의 무단 전재 및 재배포를 금합니다.
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        async function init() {
+            const token = localStorage.getItem('myToken');
+            if (!token) {
+                location.href = '/';
+                return;
+            }
+
+            const authRes = await fetch('/api/verify', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const authData = await authRes.json();
+
+            if (!authData.success || authData.user.role !== 'admin') {
+                alert('관리자만 접근 가능합니다.');
+                location.href = '/main';
+                return;
+            }
+
+            document.getElementById('welcome').innerText = authData.user.userName + ' 관리자님';
+            loadData();
+        }
+
+        async function loadData() {
+            await loadUsers();
+            await loadArticles();
+        }
+
+        async function loadUsers() {
+            const token = localStorage.getItem('myToken');
+            const res = await fetch('/api/admin/users', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+
+            data.forEach(user => {
+                userList.innerHTML += `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.user_name}</td>
+                        <td>${user.role}</td>
+                        <td><input class="table-input" id="uid_${user.id}" value="${user.user_id}"></td>
+                        <td><input class="table-input" id="pw_${user.id}" type="password" placeholder="새 비밀번호"></td>
+                        <td>
+                            <button class="action-btn" onclick="updateUserId(${user.id})">아이디수정</button>
+                            <button class="action-btn" onclick="updatePassword(${user.id})">비밀번호수정</button>
+                            <button class="action-btn delete" onclick="deleteUser(${user.id})">삭제</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        async function loadArticles() {
+            const token = localStorage.getItem('myToken');
+            const search = document.getElementById('searchWord').value.trim();
+
+            const res = await fetch('/api/admin/articles?search=' + encodeURIComponent(search), {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+
+            const articleList = document.getElementById('articleList');
+            articleList.innerHTML = '';
+
+            if (data.length === 0) {
+                articleList.innerHTML = '<p>기사가 없습니다.</p>';
+                return;
+            }
+
+            data.forEach(item => {
+                articleList.innerHTML += `
+                    <div class="admin-article-card">
+                        <div class="admin-article-title">${item.title} <span class="status-badge">${item.status}</span></div>
+                        <div class="admin-article-meta">${item.article_date} | ${item.category} | 취재기자 ${item.reporter_name}</div>
+                        <div style="line-height:1.8; margin-bottom:10px;">${item.content.substring(0, 180)}...</div>
+                        <button class="action-btn" onclick="publishArticle(${item.id})">승인 출판</button>
+                        <button class="action-btn delete" onclick="rejectArticle(${item.id})">반려</button>
+                        <button class="action-btn" onclick="viewArticle(${item.id})">기사보기</button>
+                    </div>
+                `;
+            });
+        }
+
+        async function updateUserId(id) {
+            const token = localStorage.getItem('myToken');
+            const userId = document.getElementById('uid_' + id).value;
+
+            const res = await fetch('/api/admin/users/' + id + '/userid', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ userId })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                alert('아이디 수정 완료');
+                loadData();
+            } else {
+                alert('아이디 수정 실패');
+            }
+        }
+
+        async function updatePassword(id) {
+            const token = localStorage.getItem('myToken');
+            const password = document.getElementById('pw_' + id).value;
+
+            const res = await fetch('/api/admin/users/' + id + '/password', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ password })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                alert('비밀번호 수정 완료');
+                loadData();
+            } else {
+                alert('비밀번호 수정 실패');
+            }
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('정말 삭제하시겠습니까?')) return;
+
+            const token = localStorage.getItem('myToken');
+            const res = await fetch('/api/admin/users/' + id, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                alert('삭제 완료');
+                loadData();
+            } else {
+                alert('삭제 실패');
+            }
+        }
+
+        async function publishArticle(id) {
+            const token = localStorage.getItem('myToken');
+            const res = await fetch('/api/admin/articles/' + id + '/publish', {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                alert('출판 승인 완료');
+                loadData();
+            } else {
+                alert('승인 실패');
+            }
+        }
+
+        async function rejectArticle(id) {
+            const token = localStorage.getItem('myToken');
+            const res = await fetch('/api/admin/articles/' + id + '/reject', {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                alert('반려 완료');
+                loadData();
+            } else {
+                alert('반려 실패');
+            }
+        }
+
+        function viewArticle(id) {
+            location.href = '/article?id=' + id;
+        }
+
+        function logout() {
+            localStorage.removeItem('myToken');
+            location.href = '/';
+        }
+
+        init();
+    </script>
+</body>
+</html>

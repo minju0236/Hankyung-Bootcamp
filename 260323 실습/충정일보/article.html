@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정일보 기사 보기</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="topbar">
+        <div class="brand" onclick="goBack()">충정일보</div>
+        <div>
+            <button class="top-btn" onclick="goBack()">목록으로</button>
+        </div>
+    </div>
+
+    <div class="article-wrap">
+        <div class="article-title" id="title"></div>
+        <div class="article-meta" id="meta"></div>
+        <img id="photo" class="article-photo" style="display:none;">
+        <div class="article-content" id="content"></div>
+
+        <div class="comment-box">
+            <div class="comment-title">댓글</div>
+            <div class="comment-form">
+                <input class="input" type="text" id="commentText" placeholder="댓글을 입력하세요">
+                <button class="button" onclick="saveComment()">댓글 등록</button>
+            </div>
+            <div id="commentList"></div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">충정일보</div>
+
+            <div class="footer-info">
+                <div class="footer-info-block">
+                    발행인: 홍길동<br>
+                    편집인: 김충정<br>
+                    주소: 서울특별시 중구 세종대로 100 충정일보 빌딩<br>
+                    대표전화: 02-1234-5678
+                </div>
+
+                <div class="footer-info-block">
+                    사업자등록번호: 123-45-67890<br>
+                    청소년보호책임자: 강감찬<br>
+                    대표 이메일: editor@cjdaily.co.kr<br>
+                    기사제보: press@cjdaily.co.kr
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <span>회사소개</span>
+                <span>이용약관</span>
+                <span>개인정보처리방침</span>
+                <span>광고문의</span>
+                <span>기사제보</span>
+                <span>고객센터</span>
+            </div>
+
+            <div class="footer-copy">
+                Copyright © 충정일보. All rights reserved.<br>
+                본 사이트에 게재된 기사, 사진, 영상, 콘텐츠의 무단 전재 및 재배포를 금합니다.
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        let currentUser = null;
+        let articleId = null;
+
+        async function init() {
+            const params = new URLSearchParams(location.search);
+            articleId = params.get('id');
+
+            if (!articleId) {
+                alert('기사 번호가 없습니다.');
+                history.back();
+                return;
+            }
+
+            const token = localStorage.getItem('myToken');
+            if (token) {
+                const authRes = await fetch('/api/verify', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const authData = await authRes.json();
+                if (authData.success) {
+                    currentUser = authData.user;
+                }
+            }
+
+            await loadArticle();
+            await loadData();
+        }
+
+        async function loadArticle() {
+            const token = localStorage.getItem('myToken');
+            const headers = {};
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            const res = await fetch('/api/article/' + articleId, { headers });
+            const data = await res.json();
+
+            if (!data.success) {
+                alert(data.message || '기사를 찾을 수 없습니다.');
+                history.back();
+                return;
+            }
+
+            const article = data.article;
+
+            document.getElementById('title').innerText = article.title;
+            document.getElementById('meta').innerText =
+                `${article.article_date} | ${article.category} | 취재기자 ${article.reporter_name} | 상태 ${article.status}`;
+
+            if (article.photo_path) {
+                const photo = document.getElementById('photo');
+                photo.src = article.photo_path;
+                photo.style.display = 'block';
+            }
+
+            document.getElementById('content').innerText = article.content;
+        }
+
+        async function loadData() {
+            const res = await fetch('/api/article/' + articleId + '/comments');
+            const data = await res.json();
+
+            const commentList = document.getElementById('commentList');
+            commentList.innerHTML = '';
+
+            if (data.length === 0) {
+                commentList.innerHTML = '<p>댓글이 없습니다.</p>';
+                return;
+            }
+
+            data.forEach(item => {
+                const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.id === item.user_id);
+
+                commentList.innerHTML += `
+                    <div class="comment-item">
+                        <div class="comment-meta">${item.user_name} | ${item.created_at}</div>
+                        <div class="comment-content">${item.content}</div>
+                        ${canDelete ? `<button class="inline-btn" onclick="deleteComment(${item.id})">삭제</button>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        async function saveComment() {
+            const token = localStorage.getItem('myToken');
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                location.href = '/';
+                return;
+            }
+
+            const content = document.getElementById('commentText').value;
+
+            const res = await fetch('/api/article/' + articleId + '/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ content })
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                document.getElementById('commentText').value = '';
+                loadData();
+            } else {
+                alert(data.message || '댓글 등록 실패');
+            }
+        }
+
+        async function deleteComment(id) {
+            const token = localStorage.getItem('myToken');
+            const res = await fetch('/api/comments/' + id, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                loadData();
+            } else {
+                alert('댓글 삭제 실패');
+            }
+        }
+
+        function goBack() {
+            history.back();
+        }
+
+        init();
+    </script>
+</body>
+</html>

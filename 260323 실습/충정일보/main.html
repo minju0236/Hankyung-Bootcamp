@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정일보 인증 확인</title>
+</head>
+<body>
+    <script>
+        async function init() {
+            const token = localStorage.getItem('myToken');
+            if (!token) {
+                location.href = '/';
+                return;
+            }
+
+            const authRes = await fetch('/api/verify', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const authData = await authRes.json();
+
+            if (!authData.success) {
+                alert('인증이 만료되었습니다.');
+                localStorage.removeItem('myToken');
+                location.href = '/';
+                return;
+            }
+
+            if (authData.user.role === 'subscriber') {
+                location.href = '/subscriber';
+            } else if (authData.user.role === 'reporter') {
+                location.href = '/reporter';
+            } else if (authData.user.role === 'admin') {
+                location.href = '/admin';
+            } else {
+                alert('역할 정보 오류');
+                localStorage.removeItem('myToken');
+                location.href = '/';
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>
