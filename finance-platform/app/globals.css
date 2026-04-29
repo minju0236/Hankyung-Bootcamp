@@ -1,0 +1,137 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f5f7fb;
+  color: #111827;
+  font-family: Arial, sans-serif;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.card {
+  max-width: 1000px;
+  margin: 0 auto 24px auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 32px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 12px;
+}
+
+input,
+select,
+button,
+a {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+}
+
+button,
+a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #111827;
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+th,
+td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+td button {
+  margin-right: 8px;
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination button {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 14px;
+}
+
+.pagination button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.pagination .activePage {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.filterGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.filterGrid button {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .filterGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .filterGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,44 @@
+DROP TABLE IF EXISTS account_transactions;
+DROP TABLE IF EXISTS accounts;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
+  status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE accounts (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  account_number VARCHAR(30) NOT NULL UNIQUE,
+  account_name VARCHAR(100) NOT NULL,
+  balance DECIMAL(15, 2) NOT NULL DEFAULT 0,
+  status ENUM('active', 'closed') NOT NULL DEFAULT 'active',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_accounts_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE account_transactions (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  account_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  transaction_type ENUM('deposit', 'withdraw') NOT NULL,
+  amount DECIMAL(15, 2) NOT NULL,
+  memo VARCHAR(255),
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_transactions_account
+    FOREIGN KEY (account_id) REFERENCES accounts(id)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_transactions_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+);
