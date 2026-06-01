@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dating App</title>
+
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 40px;
+    }
+
+    .container {
+      width: 420px;
+      margin: auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    .check-group {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .check-item input {
+      width: auto;
+      margin: 0;
+      transform: scale(1.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background-color: #ff5c8a;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #ff3b72;
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 5px;
+      background-color: #f1f1f1;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>데이팅 앱 가입</h1>
+
+  <input type="text"
+         id="userId"
+         placeholder="사용자 ID">
+
+  <input type="text"
+         id="nickname"
+         placeholder="닉네임">
+
+  <input type="number"
+         id="age"
+         placeholder="나이">
+
+  <textarea id="bio"
+            placeholder="자기소개"></textarea>
+
+  <input type="text"
+         id="interest"
+         placeholder="관심사">
+
+  <div class="check-group">
+
+    <label class="check-item">
+      <input type="checkbox"
+             id="matchingRequest">
+      매칭 신청 여부
+    </label>
+
+    <label class="check-item">
+      <input type="checkbox"
+             id="premium">
+      프리미엄 회원 여부
+    </label>
+
+  </div>
+
+  <button onclick="createProfile()">
+    가입하기
+  </button>
+
+  <div id="result"
+       class="result"></div>
+
+</div>
+
+<script>
+
+  const users = [
+    "user01",
+    "admin"
+  ];
+
+  const nicknames = [
+    "감자"
+  ];
+
+  function createProfile() {
+
+    const userId =
+      document.getElementById("userId").value;
+
+    const nickname =
+      document.getElementById("nickname").value;
+
+    const age =
+      Number(
+        document.getElementById("age").value
+      );
+
+    const bio =
+      document.getElementById("bio").value;
+
+    const interest =
+      document.getElementById("interest").value;
+
+    const matchingRequest =
+      document.getElementById(
+        "matchingRequest"
+      ).checked;
+
+    const premium =
+      document.getElementById(
+        "premium"
+      ).checked;
+
+    const result =
+      document.getElementById("result");
+
+    result.innerHTML = "";
+
+    try {
+
+      let state = "프로필 생성 중";
+
+      console.log(state);
+
+      // 존재하지 않는 사용자
+      if (!users.includes(userId)) {
+
+        throw new Error(
+          "존재하지 않는 사용자입니다."
+        );
+
+      }
+
+      // 닉네임 중복
+      if (nicknames.includes(nickname)) {
+
+        throw new Error(
+          "이미 사용 중인 닉네임입니다."
+        );
+
+      }
+
+      // 나이 제한
+      if (age < 19) {
+
+        throw new Error(
+          "19세 이상만 가입 가능합니다."
+        );
+
+      }
+
+      // 자기소개 누락
+      if (bio.trim() === "") {
+
+        throw new Error(
+          "자기소개를 입력해주세요."
+        );
+
+      }
+
+      // 자기소개 길이 제한
+      if (bio.length > 100) {
+
+        throw new Error(
+          "자기소개 길이를 초과했습니다."
+        );
+
+      }
+
+      // 관심사 누락
+      if (interest.trim() === "") {
+
+        throw new Error(
+          "관심사를 입력해주세요."
+        );
+
+      }
+
+      // 매칭 제한
+      if (!premium && matchingRequest) {
+
+        throw new Error(
+          "일반 회원은 매칭 신청이 제한됩니다."
+        );
+
+      }
+
+      state = "프로필 생성 완료";
+
+      result.innerHTML = `
+        <div class="success">
+
+          <h3>회원가입 성공</h3>
+
+          <p>상태: ${state}</p>
+
+          <p>닉네임: ${nickname}</p>
+
+          <p>관심사: ${interest}</p>
+
+          <p>매칭 상태: 신청 완료</p>
+
+          <p>프리미엄 회원 여부: ${premium}</p>
+
+        </div>
+      `;
+
+    }
+
+    catch (e) {
+
+      result.innerHTML = `
+        <div class="error">
+
+          <h3>회원가입 실패</h3>
+
+          <p>${e.message}</p>
+
+        </div>
+      `;
+
+    }
+
+  }
+
+</script>
+
+</body>
+</html>
